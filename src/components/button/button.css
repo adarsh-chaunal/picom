@@ -1,0 +1,12 @@
+.ui-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .ui-button:hover {
+        background: #2980b9;
+    }

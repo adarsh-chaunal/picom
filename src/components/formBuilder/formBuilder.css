@@ -1,0 +1,33 @@
+#form-builder {
+  transition: border-color 0.3s ease;
+}
+
+.draggable-component {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 5px;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: grab;
+  user-select: none;
+}
+
+.draggable-component:active {
+  cursor: grabbing;
+}
+
+.form-component {
+  padding: 10px;
+  margin: 5px 0;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+}
+
+.form-component:hover {
+  border-color: #007bff;
+  background: #e9ecef;
+}           

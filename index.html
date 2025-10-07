@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Library - Component Test Area</title>
+  <link rel="stylesheet" href="src/components/button/button.css">
+  <link rel="stylesheet" href="src/components/input/input.css">
+  <link rel="stylesheet" href="src/components/formBuilder/formBuilder.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+    #test-area {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    #form-builder {
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>UI Library - Component Test Area</h1>
+  <div id="test-area">
+    <h2>Drag and Drop Form Builder</h2>
+    <div id="form-builder">
+      Drag components here to build your form
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- Core utilities -->
+  <script src="src/core/base.js"></script>
+  <script src="src/core/eventBus.js"></script>
+  <script src="src/core/domUtils.js"></script>
+
+  <!-- Components -->
+  <script src="src/components/button/button.js"></script>
+  <script src="src/components/input/input.js"></script>
+  <script src="src/components/formBuilder/formBuilder.js"></script>
+
+  <!-- Test Script -->
+  <script src="test.js"></script>
+</body>
+</html>

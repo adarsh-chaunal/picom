@@ -1,0 +1,17 @@
+// Sample form schema
+
+{
+  "title": "Customer Feedback",
+  "fields": [
+    {
+      "type": "input",
+      "label": "Name",
+      "placeholder": "Enter your name"
+    },
+    {
+      "type": "select",
+      "label": "Rating",
+      "options": [ "Good", "Average", "Bad" ]
+    }
+  ]
+}
