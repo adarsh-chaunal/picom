@@ -1,0 +1,81 @@
+{
+  "title": "Dashboard Example",
+  "pages": [
+    {
+      "id": "dashboard",
+      "className": "dashboard-page",
+      "layout": {
+        "type": "dashboard",
+        "sidebar": {
+          "title": "Dashboard",
+          "items": [
+            {
+              "text": "Overview",
+              "href": "#",
+              "active": true
+            },
+            {
+              "text": "Analytics",
+              "href": "#"
+            },
+            {
+              "text": "Users",
+              "href": "#"
+            },
+            {
+              "text": "Settings",
+              "href": "#"
+            },
+            {
+              "text": "Reports",
+              "href": "#"
+            }
+          ]
+        },
+        "topbar": {
+          "title": "Dashboard Overview",
+          "actions": [
+            {
+              "text": "Export",
+              "onClick": "() => console.log('Export clicked')"
+            },
+            {
+              "text": "Settings",
+              "onClick": "() => console.log('Settings clicked')"
+            }
+          ]
+        },
+        "content": [
+          {
+            "type": "card",
+            "config": {
+              "title": "Welcome to Dashboard",
+              "description": "Manage your data and analytics from here. This is a complete dashboard layout with sidebar navigation and top bar actions.",
+              "buttons": [
+                {
+                  "text": "View Reports",
+                  "href": "#",
+                  "variant": "primary"
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "config": {
+              "title": "Quick Stats",
+              "description": "Here you can display your key metrics and statistics in a clean, organized way.",
+              "buttons": [
+                {
+                  "text": "View Details",
+                  "href": "#",
+                  "variant": "outline"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

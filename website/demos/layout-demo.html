@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picom UI Library - Layout Demo</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- jQuery UI for drag and drop -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="../src/components/layout/layout.css">
+    <link rel="stylesheet" href="../src/components/navbar/navbar.css">
+    <link rel="stylesheet" href="../src/components/hero/hero.css">
+    <link rel="stylesheet" href="../src/components/section/section.css">
+    <link rel="stylesheet" href="../src/components/card/card.css">
+    <link rel="stylesheet" href="../src/components/button/button.css">
+    <link rel="stylesheet" href="../src/components/input/input.css">
+    <link rel="stylesheet" href="../src/components/checkbox/checkbox.css">
+    <link rel="stylesheet" href="../src/components/select/select.css">
+    <link rel="stylesheet" href="../src/builder/builder.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .layout-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .layout-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .layout-btn {
+            padding: 10px 20px;
+            border: 2px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .layout-btn:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .layout-btn.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Main Site</a>
+    
+    <div class="demo-header">
+        <h1>Layout System Demo</h1>
+        <p>Explore different layout templates available in Picom UI Library</p>
+    </div>
+    
+    <div class="layout-selector">
+        <h3 style="text-align: center; margin-bottom: 15px;">Choose a Layout:</h3>
+        <div class="layout-buttons">
+            <button class="layout-btn active" data-layout="landing">Landing Page</button>
+            <button class="layout-btn" data-layout="dashboard">Dashboard</button>
+            <button class="layout-btn" data-layout="portfolio">Portfolio</button>
+            <button class="layout-btn" data-layout="blog">Blog</button>
+            <button class="layout-btn" data-layout="minimal">Minimal</button>
+            <button class="layout-btn" data-layout="sidebar">Sidebar</button>
+            <button class="layout-btn" data-layout="grid">Grid</button>
+        </div>
+    </div>
+    
+    <div class="demo-container">
+        <div id="layout-container"></div>
+    </div>
+
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- Core utilities -->
+    <script src="../src/core/base.js"></script>
+    <script src="../src/core/eventBus.js"></script>
+    <script src="../src/core/domUtils.js"></script>
+    <script src="../src/core/websiteBuilder.js"></script>
+
+    <!-- Components -->
+    <script src="../src/components/layout/layout.js"></script>
+    <script src="../src/components/navbar/navbar.js"></script>
+    <script src="../src/components/hero/hero.js"></script>
+    <script src="../src/components/section/section.js"></script>
+    <script src="../src/components/card/card.js"></script>
+    <script src="../src/components/button/button.js"></script>
+    <script src="../src/components/input/input.js"></script>
+    <script src="../src/components/checkbox/checkbox.js"></script>
+    <script src="../src/components/select/select.js"></script>
+
+    <!-- Templates -->
+    <script src="../src/templates/layouts.js"></script>
+
+    <!-- Demo Script -->
+    <script>
+        $(document).ready(function() {
+            console.log('Layout Demo initialized');
+            
+            const layoutContainer = $('#layout-container');
+            let currentLayout = 'landing';
+            
+            // Load initial layout
+            loadLayout(currentLayout);
+            
+            // Handle layout button clicks
+            $('.layout-btn').on('click', function() {
+                $('.layout-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                currentLayout = $(this).data('layout');
+                loadLayout(currentLayout);
+            });
+            
+            function loadLayout(layoutType) {
+                console.log('Loading layout:', layoutType);
+                
+                // Get layout template
+                const layoutConfig = getLayoutTemplate(layoutType);
+                
+                // Create layout component
+                const layout = new LayoutComponent(layoutConfig);
+                const $layout = layout.render();
+                
+                // Clear container and add new layout
+                layoutContainer.empty().append($layout);
+                
+                console.log('Layout loaded:', layoutType);
+            }
+        });
+    </script>
+</body>
+</html>

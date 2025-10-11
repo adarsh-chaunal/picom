@@ -1,0 +1,23 @@
+.ui-select {
+    margin-bottom: 15px;
+}
+
+.ui-select label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.ui-select select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.ui-select select:focus {
+    outline: none;
+    border-color: #007bff;
+}

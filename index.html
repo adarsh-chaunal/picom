@@ -1,64 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UI Library - Component Test Area</title>
-  <link rel="stylesheet" href="src/components/button/button.css">
-  <link rel="stylesheet" href="src/components/input/input.css">
-  <link rel="stylesheet" href="src/components/formBuilder/formBuilder.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      padding: 20px;
-    }
-    #test-area {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    #form-builder {
-      margin-top: 20px;
-      padding: 20px;
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picom UI Library - Build Beautiful UIs with Ease</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- jQuery UI for drag and drop -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="src/components/layout/layout.css">
+    <link rel="stylesheet" href="src/components/navbar/navbar.css">
+    <link rel="stylesheet" href="src/components/hero/hero.css">
+    <link rel="stylesheet" href="src/components/section/section.css">
+    <link rel="stylesheet" href="src/components/card/card.css">
+    <link rel="stylesheet" href="src/components/button/button.css">
+    <link rel="stylesheet" href="src/components/input/input.css">
+    <link rel="stylesheet" href="src/components/checkbox/checkbox.css">
+    <link rel="stylesheet" href="src/components/select/select.css">
+    <link rel="stylesheet" href="src/builder/builder.css">
+    
+    <!-- Global Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        .page {
+            min-height: 100vh;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-
-  <h1>UI Library - Component Test Area</h1>
-  <div id="test-area">
-    <h2>Drag and Drop Form Builder</h2>
-    <div id="form-builder">
-      Drag components here to build your form
+    <!-- Loading indicator -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        Loading Picom UI Library...
     </div>
-  </div>
+    
+    <!-- Website content will be built here -->
+    <div id="website-container"></div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Picom UI Library. Built with ❤️ for developers.</p>
+        <p>
+            <a href="https://github.com/yourusername/picom-ui-library">GitHub</a> | 
+            <a href="#docs">Documentation</a> | 
+            <a href="demos/form-builder-demo.html">Form Builder</a>
+        </p>
+    </footer>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Core utilities -->
-  <script src="src/core/base.js"></script>
-  <script src="src/core/eventBus.js"></script>
-  <script src="src/core/domUtils.js"></script>
+    <!-- Core utilities -->
+    <script src="src/core/base.js"></script>
+    <script src="src/core/eventBus.js"></script>
+    <script src="src/core/domUtils.js"></script>
+    <script src="src/core/websiteBuilder.js"></script>
 
-  <!-- Components -->
-  <script src="src/components/button/button.js"></script>
-  <script src="src/components/input/input.js"></script>
-  <script src="src/components/formBuilder/formBuilder.js"></script>
+    <!-- Components -->
+    <script src="src/components/layout/layout.js"></script>
+    <script src="src/components/navbar/navbar.js"></script>
+    <script src="src/components/hero/hero.js"></script>
+    <script src="src/components/section/section.js"></script>
+    <script src="src/components/card/card.js"></script>
+    <script src="src/components/button/button.js"></script>
+    <script src="src/components/input/input.js"></script>
+    <script src="src/components/checkbox/checkbox.js"></script>
+    <script src="src/components/select/select.js"></script>
 
-  <!-- Test Script -->
-  <script src="index.js"></script>
+    <!-- Builder -->
+    <script src="src/builder/builder.js"></script>
+
+    <!-- Templates -->
+    <script src="src/templates/layouts.js"></script>
+
+    <!-- Website initialization -->
+    <script>
+        $(document).ready(function() {
+            console.log('Initializing Picom UI Library Website...');
+            
+            // Check if all required components are loaded
+            if (typeof WebsiteBuilder === 'undefined') {
+                console.error('WebsiteBuilder not found!');
+                $('#loading').html('<p style="color: red;">WebsiteBuilder not loaded. Check console for errors.</p>');
+                return;
+            }
+            
+            if (typeof LayoutComponent === 'undefined') {
+                console.error('LayoutComponent not found!');
+                $('#loading').html('<p style="color: red;">LayoutComponent not loaded. Check console for errors.</p>');
+                return;
+            }
+            
+            console.log('All components loaded successfully');
+            
+            // Initialize website builder
+            const websiteBuilder = new WebsiteBuilder('website-container');
+            
+            // Load website from JSON
+            websiteBuilder.loadFromFile('website/pages/home.json', function(error, data) {
+                if (error) {
+                    console.error('Failed to load website:', error);
+                    $('#loading').html('<p style="color: red;">Failed to load website. Please check the console for errors.</p>');
+                    return;
+                }
+                
+                // Hide loading indicator
+                $('#loading').fadeOut(500, function() {
+                    $(this).remove();
+                });
+                
+                console.log('Website loaded successfully:', data);
+                
+                // Add smooth scrolling for anchor links
+                $('a[href^="#"]').on('click', function(e) {
+                    e.preventDefault();
+                    const target = $(this.getAttribute('href'));
+                    if (target.length) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 70
+                        }, 800);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

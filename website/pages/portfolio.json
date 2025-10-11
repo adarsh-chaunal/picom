@@ -1,0 +1,100 @@
+{
+  "title": "Portfolio Example",
+  "pages": [
+    {
+      "id": "portfolio",
+      "className": "portfolio-page",
+      "layout": {
+        "type": "portfolio",
+        "navbar": {
+          "brand": {
+            "text": "Creative Portfolio",
+            "href": "#"
+          },
+          "items": [
+            {
+              "text": "Home",
+              "href": "#",
+              "active": true
+            },
+            {
+              "text": "About",
+              "href": "#about"
+            },
+            {
+              "text": "Work",
+              "href": "#work"
+            },
+            {
+              "text": "Contact",
+              "href": "#contact"
+            }
+          ]
+        },
+        "hero": {
+          "title": "Creative Portfolio",
+          "subtitle": "Showcasing amazing work and projects built with Picom UI Library",
+          "buttons": [
+            {
+              "text": "View Work",
+              "href": "#work",
+              "variant": "primary"
+            }
+          ]
+        },
+        "portfolio": {
+          "title": "Featured Work",
+          "items": [
+            {
+              "title": "E-commerce Website",
+              "description": "Modern e-commerce platform built with React and Picom UI components",
+              "image": "https://via.placeholder.com/400x300/007bff/ffffff?text=E-commerce"
+            },
+            {
+              "title": "Dashboard Application",
+              "description": "Analytics dashboard with real-time data visualization",
+              "image": "https://via.placeholder.com/400x300/28a745/ffffff?text=Dashboard"
+            },
+            {
+              "title": "Mobile App Design",
+              "description": "UI/UX design for mobile application with modern interface",
+              "image": "https://via.placeholder.com/400x300/dc3545/ffffff?text=Mobile+App"
+            },
+            {
+              "title": "Landing Page",
+              "description": "High-converting landing page with beautiful animations",
+              "image": "https://via.placeholder.com/400x300/ffc107/000000?text=Landing+Page"
+            },
+            {
+              "title": "Blog Platform",
+              "description": "Content management system with modern blog interface",
+              "image": "https://via.placeholder.com/400x300/6f42c1/ffffff?text=Blog+Platform"
+            },
+            {
+              "title": "Portfolio Site",
+              "description": "Personal portfolio website with creative design",
+              "image": "https://via.placeholder.com/400x300/fd7e14/ffffff?text=Portfolio"
+            }
+          ]
+        },
+        "footer": {
+          "text": "© 2024 Creative Portfolio. Built with Picom UI Library.",
+          "links": [
+            {
+              "text": "LinkedIn",
+              "href": "#"
+            },
+            {
+              "text": "GitHub",
+              "href": "#"
+            },
+            {
+              "text": "Email",
+              "href": "#"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

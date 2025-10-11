@@ -1,0 +1,180 @@
+{
+  "title": "Picom UI Library - Home",
+  "pages": [
+    {
+      "id": "home",
+      "className": "home-page",
+      "components": [
+        {
+          "type": "navbar",
+          "config": {
+            "brand": {
+              "text": "Picom UI",
+              "href": "#"
+            },
+            "items": [
+              {
+                "text": "Home",
+                "href": "#",
+                "active": true
+              },
+              {
+                "text": "Components",
+                "href": "#components"
+              },
+              {
+                "text": "Form Builder",
+                "href": "demos/form-builder-demo.html"
+              },
+              {
+                "text": "Layout Demo",
+                "href": "demos/layout-demo.html"
+              },
+              {
+                "text": "Documentation",
+                "href": "#docs"
+              },
+              {
+                "text": "GitHub",
+                "href": "https://github.com/yourusername/picom-ui-library"
+              }
+            ],
+            "mobile": true
+          }
+        },
+        {
+          "type": "hero",
+          "config": {
+            "title": "Build Beautiful UIs with Ease",
+            "subtitle": "A lightweight JavaScript and CSS component library with drag-and-drop form builder capabilities. Create stunning interfaces without heavy frameworks.",
+            "buttons": [
+              {
+                "text": "Get Started",
+                "href": "#components",
+                "variant": "primary"
+              },
+              {
+                "text": "View Demo",
+                "href": "demos/form-builder-demo.html",
+                "variant": "secondary"
+              }
+            ]
+          }
+        },
+        {
+          "type": "section",
+          "config": {
+            "title": "Why Choose Picom UI?",
+            "subtitle": "Modern, lightweight, and easy to use components for your next project",
+            "className": "light",
+            "content": [
+              {
+                "type": "card",
+                "config": {
+                  "title": "Lightweight",
+                  "description": "Pure JavaScript and CSS. No heavy frameworks or dependencies. Just include and use.",
+                  "buttons": [
+                    {
+                      "text": "Learn More",
+                      "href": "#",
+                      "variant": "outline"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "config": {
+                  "title": "Drag & Drop Builder",
+                  "description": "Visual form builder with drag-and-drop interface. Build forms without writing code.",
+                  "buttons": [
+                    {
+                      "text": "Try Builder",
+                      "href": "demos/form-builder-demo.html",
+                      "variant": "outline"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "config": {
+                  "title": "JSON Driven",
+                  "description": "Build entire websites from JSON configurations. Perfect for dynamic content and CMS integration.",
+                  "buttons": [
+                    {
+                      "text": "See Examples",
+                      "href": "#",
+                      "variant": "outline"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "section",
+          "config": {
+            "title": "Components",
+            "subtitle": "Everything you need to build modern web interfaces",
+            "className": "primary",
+            "content": [
+              {
+                "type": "card",
+                "config": {
+                  "title": "Form Components",
+                  "description": "Input fields, buttons, checkboxes, select dropdowns, and more.",
+                  "buttons": [
+                    {
+                      "text": "View Components",
+                      "href": "demos/simple-usage.html",
+                      "variant": "secondary"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "config": {
+                  "title": "Layout Components",
+                  "description": "Navigation bars, hero sections, cards, and responsive layouts.",
+                  "buttons": [
+                    {
+                      "text": "View Layouts",
+                      "href": "#",
+                      "variant": "secondary"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "config": {
+                  "title": "Interactive Builder",
+                  "description": "Drag and drop interface to build forms visually.",
+                  "buttons": [
+                    {
+                      "text": "Try Builder",
+                      "href": "demos/form-builder-demo.html",
+                      "variant": "secondary"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "section",
+          "config": {
+            "title": "Get Started",
+            "subtitle": "Start building with Picom UI in minutes",
+            "className": "dark",
+            "content": "<div style='text-align: center;'><h3>Installation</h3><pre style='background: #34495e; color: #ecf0f1; padding: 1rem; border-radius: 6px; text-align: left; display: inline-block;'><code>npm install picom-ui-library</code></pre><p style='margin-top: 1rem;'>Or include directly in your HTML</p></div>"
+          }
+        }
+      ]
+    }
+  ]
+}

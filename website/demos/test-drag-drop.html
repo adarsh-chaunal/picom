@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Test</title>
+    
+    <!-- jQuery UI for drag and drop -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="../src/components/button/button.css">
+    <link rel="stylesheet" href="../src/components/input/input.css">
+    <link rel="stylesheet" href="../src/components/checkbox/checkbox.css">
+    <link rel="stylesheet" href="../src/components/select/select.css">
+    <link rel="stylesheet" href="../src/builder/builder.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            display: flex;
+            gap: 20px;
+            min-height: 400px;
+        }
+        
+        .palette {
+            width: 200px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .canvas {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            min-height: 300px;
+        }
+        
+        .test-item {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: move;
+        }
+        
+        .test-item:hover {
+            background: #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag and Drop Test</h1>
+    
+    <div class="test-container">
+        <div class="palette">
+            <h3>Drag Items</h3>
+            <div class="test-item" data-type="input">📝 Input Field</div>
+            <div class="test-item" data-type="button">🔘 Button</div>
+            <div class="test-item" data-type="checkbox">☑️ Checkbox</div>
+            <div class="test-item" data-type="select">📋 Select</div>
+        </div>
+        
+        <div class="canvas" id="drop-zone">
+            <h3>Drop Zone</h3>
+            <p>Drag items here to test</p>
+        </div>
+    </div>
+    
+    <div id="output"></div>
+
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- Core utilities -->
+    <script src="../src/core/base.js"></script>
+    <script src="../src/core/eventBus.js"></script>
+    <script src="../src/core/domUtils.js"></script>
+
+    <!-- Components -->
+    <script src="../src/components/button/button.js"></script>
+    <script src="../src/components/input/input.js"></script>
+    <script src="../src/components/checkbox/checkbox.js"></script>
+    <script src="../src/components/select/select.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log('Test page loaded');
+            
+            // Make items draggable
+            $('.test-item').draggable({
+                helper: 'clone',
+                revert: 'invalid',
+                cursor: 'move',
+                start: function(event, ui) {
+                    console.log('Drag started:', $(this).data('type'));
+                }
+            });
+            
+            // Make drop zone droppable
+            $('#drop-zone').droppable({
+                accept: '.test-item',
+                activeClass: 'ui-droppable-hover',
+                drop: function(event, ui) {
+                    event.preventDefault();
+                    const componentType = ui.helper.attr('data-type') || ui.helper.data('type');
+                    console.log('Dropped:', componentType);
+                    
+                    // Create and add component
+                    let component;
+                    const config = { id: `test-${Date.now()}` };
+                    
+                    switch (componentType) {
+                        case 'input':
+                            component = new InputComponent(config);
+                            break;
+                        case 'button':
+                            component = new ButtonComponent(config);
+                            break;
+                        case 'checkbox':
+                            component = new CheckboxComponent(config);
+                            break;
+                        case 'select':
+                            config.options = ['Option 1', 'Option 2', 'Option 3'];
+                            component = new SelectComponent(config);
+                            break;
+                    }
+                    
+                    if (component) {
+                        const $rendered = component.render();
+                        $rendered.addClass('form-component');
+                        $(this).find('p').remove();
+                        $(this).append($rendered);
+                        
+                        $('#output').html('<p style="color: green;">✅ Component added: ' + componentType + '</p>');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

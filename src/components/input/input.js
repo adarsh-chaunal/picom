@@ -1,4 +1,8 @@
 class InputComponent extends BaseComponent {
+    constructor(config = {}) {
+        super('input', config);
+    }
+
     render() {
         const $container = createElement('div', 'ui-input');
         const $label = createElement('label', '', this.config.label || 'Label');

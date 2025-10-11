@@ -1,0 +1,42 @@
+{
+  "name": "picom-ui-library",
+  "version": "1.0.0",
+  "description": "A lightweight JavaScript and CSS component library with drag-and-drop form builder",
+  "main": "dist/picom.min.js",
+  "files": [
+    "dist/",
+    "src/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run build:js && npm run build:css",
+    "build:js": "mkdir -p dist && cat src/core/*.js src/components/*/*.js src/builder/*.js > dist/picom.js && uglifyjs dist/picom.js -o dist/picom.min.js",
+    "build:css": "mkdir -p dist && cat src/components/*/*.css src/builder/*.css > dist/picom.css",
+    "dev": "python -m http.server 8000",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "form-builder",
+    "drag-drop",
+    "javascript",
+    "css"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "uglify-js": "^3.17.4"
+  },
+  "peerDependencies": {
+    "jquery": ">=3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/picom-ui-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/picom-ui-library/issues"
+  },
+  "homepage": "https://github.com/yourusername/picom-ui-library#readme"
+}
