@@ -38,7 +38,7 @@ class FormBuilder {
             revert: 'invalid',
             cursor: 'move',
             start: function(event, ui) {
-                console.log('Drag started:', $(this).data('type'));
+                // Drag started
             }
         });
 
@@ -49,49 +49,49 @@ class FormBuilder {
             drop: (event, ui) => {
                 event.preventDefault();
                 const componentType = ui.helper.attr('data-type') || ui.helper.data('type');
-                console.log('Dropped component type:', componentType);
                 this.addComponentToCanvas(componentType);
             }
         });
     }
 
     addComponentToCanvas(componentType) {
-        console.log('Adding component to canvas:', componentType);
-        let component;
+        let ComponentClass;
         const config = { id: `comp-${Date.now()}` };
 
         try {
             switch (componentType) {
                 case 'input':
-                    component = new InputComponent(config);
+                    ComponentClass = InputComponent;
                     break;
                 case 'button':
-                    component = new ButtonComponent(config);
+                    ComponentClass = ButtonComponent;
                     break;
                 case 'checkbox':
-                    component = new CheckboxComponent(config);
+                    ComponentClass = CheckboxComponent;
                     break;
                 case 'select':
                     config.options = ['Option 1', 'Option 2', 'Option 3'];
-                    component = new SelectComponent(config);
+                    ComponentClass = SelectComponent;
                     break;
                 default:
-                    console.warn('Unknown component type:', componentType);
                     return;
             }
 
-            const $rendered = component.render();
-            $rendered.addClass('form-component');
-            
             // Clear the placeholder text if it exists
             this.container.find('p').remove();
             
-            this.container.append($rendered);
-            this.components.push(component);
+            // Use ComponentManager to render the component
+            const componentData = window.ComponentManager.renderComponent(ComponentClass, this.container, { config });
             
-            console.log('Component added successfully:', componentType);
+            if (componentData) {
+                // Add form component styling
+                componentData.element.addClass('form-component');
+                
+                // Store component reference
+                this.components.push(componentData);
+            }
         } catch (error) {
-            console.error('Error adding component:', error);
+            // Error adding component
         }
     }
 
@@ -111,6 +111,14 @@ class FormBuilder {
     }
 
     clearForm() {
+        // Dispose all components using ComponentManager
+        this.components.forEach(comp => {
+            if (comp.dispose) {
+                comp.dispose();
+            }
+        });
+        
+        // Clear the container
         this.container.empty();
         this.components = [];
         

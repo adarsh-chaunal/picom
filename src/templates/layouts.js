@@ -83,8 +83,8 @@ const LayoutTemplates = {
         topbar: {
             title: 'Dashboard Overview',
             actions: [
-                { text: 'Export', onClick: () => console.log('Export clicked') },
-                { text: 'Settings', onClick: () => console.log('Settings clicked') }
+                { text: 'Export', onClick: () => alert('Export clicked') },
+                { text: 'Settings', onClick: () => alert('Settings clicked') }
             ]
         },
         content: [

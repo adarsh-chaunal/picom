@@ -1,6 +1,5 @@
-'use strict';
-
-$(document).ready(function () {
+// Form Builder Demo Script
+$(document).ready(function() {
     // Check if jQuery UI is loaded
     if (typeof $.ui === 'undefined') {
         alert('jQuery UI is not loaded! Please include jQuery UI for drag and drop functionality.');
@@ -38,5 +37,5 @@ $(document).ready(function () {
         }
     });
 
-    // Form Builder initialized successfully
+    // Form Builder Demo initialized successfully
 });

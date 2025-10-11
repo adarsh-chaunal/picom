@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Lifecycle Demo</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="../src/components/button/button.css">
+    <link rel="stylesheet" href="../src/components/input/input.css">
+    <link rel="stylesheet" href="../src/components/card/card.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        
+        .component-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .log {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Component Lifecycle Demo</h1>
+            <p>Demonstrates proper component rendering and disposal using jQuery</p>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" id="add-button">Add Button</button>
+            <button class="btn btn-primary" id="add-input">Add Input</button>
+            <button class="btn btn-primary" id="add-card">Add Card</button>
+            <button class="btn btn-danger" id="clear-all">Clear All</button>
+            <button class="btn" id="show-stats">Show Stats</button>
+        </div>
+        
+        <div class="component-area" id="component-container">
+            <p style="text-align: center; color: #888;">Components will appear here</p>
+        </div>
+        
+        <div class="stats" id="stats-display">
+            <strong>Component Statistics:</strong><br>
+            <span id="stats-content">No components loaded</span>
+        </div>
+        
+        <div class="log" id="log-display">
+            <strong>Component Events:</strong><br>
+            <div id="log-content">Waiting for events...</div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Core utilities -->
+    <script src="../src/core/base.js"></script>
+    <script src="../src/core/eventBus.js"></script>
+    <script src="../src/core/domUtils.js"></script>
+    <script src="../src/core/componentManager.js"></script>
+
+    <!-- Components -->
+    <script src="../src/components/button/button.js"></script>
+    <script src="../src/components/input/input.js"></script>
+    <script src="../src/components/card/card.js"></script>
+
+    <!-- Demo Script -->
+    <script>
+        $(document).ready(function() {
+            console.log('Component Lifecycle Demo initialized');
+            
+            const container = $('#component-container');
+            let componentCounter = 0;
+            
+            // Log component events
+            $(document).on('component:mounted component:beforeDispose component:disposed', function(event) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logContent = $('#log-content');
+                logContent.append(`[${timestamp}] ${event.type}: ${event.componentId}<br>`);
+                logContent.scrollTop(logContent[0].scrollHeight);
+            });
+            
+            // Add button component
+            $('#add-button').on('click', function() {
+                componentCounter++;
+                const component = window.ComponentManager.renderComponent(ButtonComponent, container, {
+                    config: {
+                        text: `Button ${componentCounter}`,
+                        onClick: () => alert(`Button ${componentCounter} clicked!`)
+                    }
+                });
+                
+                if (component) {
+                    log(`Added button component: ${component.id}`);
+                    updateStats();
+                }
+            });
+            
+            // Add input component
+            $('#add-input').on('click', function() {
+                componentCounter++;
+                const component = window.ComponentManager.renderComponent(InputComponent, container, {
+                    config: {
+                        label: `Input ${componentCounter}`,
+                        placeholder: `Enter text for input ${componentCounter}`
+                    }
+                });
+                
+                if (component) {
+                    log(`Added input component: ${component.id}`);
+                    updateStats();
+                }
+            });
+            
+            // Add card component
+            $('#add-card').on('click', function() {
+                componentCounter++;
+                const component = window.ComponentManager.renderComponent(CardComponent, container, {
+                    config: {
+                        title: `Card ${componentCounter}`,
+                        description: `This is card number ${componentCounter}`,
+                        buttons: [
+                            {
+                                text: 'Action',
+                                href: '#',
+                                variant: 'outline',
+                                onClick: () => alert(`Card ${componentCounter} action clicked!`)
+                            }
+                        ]
+                    }
+                });
+                
+                if (component) {
+                    log(`Added card component: ${component.id}`);
+                    updateStats();
+                }
+            });
+            
+            // Clear all components
+            $('#clear-all').on('click', function() {
+                if (confirm('Clear all components?')) {
+                    const disposedCount = window.ComponentManager.disposeComponentsInContainer(container);
+                    log(`Disposed ${disposedCount} components`);
+                    updateStats();
+                }
+            });
+            
+            // Show stats
+            $('#show-stats').on('click', function() {
+                updateStats();
+            });
+            
+            function updateStats() {
+                const stats = window.ComponentManager.getStats();
+                const statsContent = $('#stats-content');
+                
+                let statsHtml = `Total Components: ${stats.total}<br>`;
+                statsHtml += `Memory Usage: ~${Math.round(stats.memoryUsage / 1024)}KB<br>`;
+                statsHtml += `By Type:<br>`;
+                
+                Object.entries(stats.byType).forEach(([type, count]) => {
+                    statsHtml += `&nbsp;&nbsp;${type}: ${count}<br>`;
+                });
+                
+                statsContent.html(statsHtml);
+            }
+            
+            function log(message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logContent = $('#log-content');
+                logContent.append(`[${timestamp}] ${message}<br>`);
+                logContent.scrollTop(logContent[0].scrollHeight);
+            }
+            
+            // Initial stats update
+            updateStats();
+        });
+    </script>
+</body>
+</html>

@@ -29,6 +29,7 @@ const jsFiles = [
     'src/core/base.js',
     'src/core/eventBus.js', 
     'src/core/domUtils.js',
+    'src/core/componentManager.js',
     'src/core/websiteBuilder.js',
     'src/components/layout/layout.js',
     'src/components/navbar/navbar.js',

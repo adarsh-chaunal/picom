@@ -24,11 +24,11 @@
               },
               {
                 "text": "Form Builder",
-                "href": "demos/form-builder-demo.html"
+                "href": "website/demos/form-builder-demo.html"
               },
               {
                 "text": "Layout Demo",
-                "href": "demos/layout-demo.html"
+                "href": "website/demos/layout-demo.html"
               },
               {
                 "text": "Documentation",
@@ -55,7 +55,7 @@
               },
               {
                 "text": "View Demo",
-                "href": "demos/form-builder-demo.html",
+                "href": "website/demos/form-builder-demo.html",
                 "variant": "secondary"
               }
             ]
@@ -90,7 +90,7 @@
                   "buttons": [
                     {
                       "text": "Try Builder",
-                      "href": "demos/form-builder-demo.html",
+                      "href": "website/demos/form-builder-demo.html",
                       "variant": "outline"
                     }
                   ]
@@ -128,7 +128,7 @@
                   "buttons": [
                     {
                       "text": "View Components",
-                      "href": "demos/simple-usage.html",
+                      "href": "website/demos/simple-usage.html",
                       "variant": "secondary"
                     }
                   ]
@@ -156,7 +156,7 @@
                   "buttons": [
                     {
                       "text": "Try Builder",
-                      "href": "demos/form-builder-demo.html",
+                      "href": "website/demos/form-builder-demo.html",
                       "variant": "secondary"
                     }
                   ]

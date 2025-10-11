@@ -1,15 +1,81 @@
 // Common utilities and base classes
 
-
 class BaseComponent {
     constructor(type, config = {}) {
         this.type = type;
         this.config = config;
         this.id = config.id || `comp-${Math.random().toString(36).substr(2, 9)}`;
+        this.element = null;
+        this.isDisposed = false;
+        this.eventHandlers = [];
     }
 
     render() {
         throw new Error('Render method not implemented');
+    }
+
+    // Lifecycle method - called when component is mounted
+    onMounted() {
+        // Override in subclasses if needed
+    }
+
+    // Lifecycle method - called before component is disposed
+    onBeforeDispose() {
+        // Override in subclasses if needed
+    }
+
+    // Lifecycle method - called after component is disposed
+    onDisposed() {
+        // Override in subclasses if needed
+    }
+
+    // Dispose the component
+    dispose() {
+        if (this.isDisposed) {
+            return;
+        }
+
+        this.onBeforeDispose();
+
+        // Remove all event handlers
+        this.eventHandlers.forEach(handler => {
+            if (handler.element && handler.event && handler.fn) {
+                handler.element.off(handler.event, handler.fn);
+            }
+        });
+        this.eventHandlers = [];
+
+        // Clear element reference
+        this.element = null;
+        this.isDisposed = true;
+
+        this.onDisposed();
+    }
+
+    // Helper method to add event handlers that will be cleaned up
+    addEventHandler(element, event, handler) {
+        const $element = $(element);
+        $element.on(event, handler);
+        
+        this.eventHandlers.push({
+            element: $element,
+            event: event,
+            fn: handler
+        });
+    }
+
+    // Helper method to get the component's DOM element
+    getElement() {
+        return this.element;
+    }
+
+    // Helper method to update component configuration
+    updateConfig(newConfig) {
+        this.config = { ...this.config, ...newConfig };
+        // Trigger re-render if element exists
+        if (this.element) {
+            this.element.trigger('component:configUpdated', newConfig);
+        }
     }
 }
 
@@ -35,6 +101,227 @@ function createElement(tag, className, text) {
     if (text) $el.text(text);
     return $el;
 }
+
+
+// Component Lifecycle Manager - Handles rendering and disposal of components
+class ComponentManager {
+    constructor() {
+        this.activeComponents = new Map();
+        this.componentCounter = 0;
+    }
+
+    // Render a component and track it
+    renderComponent(component, container, options = {}) {
+        if (!component || !container) {
+            console.warn('ComponentManager: Invalid component or container');
+            return null;
+        }
+
+        const componentId = `comp-${++this.componentCounter}`;
+        const $container = $(container);
+        
+        // Create component instance if it's a class
+        let componentInstance;
+        if (typeof component === 'function') {
+            componentInstance = new component(options.config || {});
+        } else if (component.render) {
+            componentInstance = component;
+        } else {
+            console.warn('ComponentManager: Invalid component type');
+            return null;
+        }
+
+        // Render the component
+        const $rendered = componentInstance.render();
+        if (!$rendered || $rendered.length === 0) {
+            console.warn('ComponentManager: Component render returned empty result');
+            return null;
+        }
+
+        // Add component ID and metadata
+        $rendered.attr('data-component-id', componentId);
+        $rendered.attr('data-component-type', componentInstance.constructor.name);
+
+        // Store component reference
+        this.activeComponents.set(componentId, {
+            instance: componentInstance,
+            element: $rendered,
+            container: $container,
+            type: componentInstance.constructor.name,
+            created: Date.now()
+        });
+
+        // Append to container
+        $container.append($rendered);
+
+        // Trigger component mounted event
+        this.triggerComponentEvent(componentId, 'mounted', {
+            component: componentInstance,
+            element: $rendered
+        });
+
+        return {
+            id: componentId,
+            element: $rendered,
+            instance: componentInstance,
+            dispose: () => this.disposeComponent(componentId)
+        };
+    }
+
+    // Dispose a component by ID
+    disposeComponent(componentId) {
+        const componentData = this.activeComponents.get(componentId);
+        if (!componentData) {
+            console.warn(`ComponentManager: Component ${componentId} not found`);
+            return false;
+        }
+
+        const { instance, element, container } = componentData;
+
+        // Trigger component before dispose event
+        this.triggerComponentEvent(componentId, 'beforeDispose', {
+            component: instance,
+            element: element
+        });
+
+        // Call component dispose method if it exists
+        if (instance.dispose && typeof instance.dispose === 'function') {
+            try {
+                instance.dispose();
+            } catch (error) {
+                console.error(`ComponentManager: Error disposing component ${componentId}:`, error);
+            }
+        }
+
+        // Remove from DOM
+        element.remove();
+
+        // Remove from tracking
+        this.activeComponents.delete(componentId);
+
+        // Trigger component disposed event
+        this.triggerComponentEvent(componentId, 'disposed', {
+            component: instance
+        });
+
+        return true;
+    }
+
+    // Dispose all components in a container
+    disposeComponentsInContainer(container) {
+        const $container = $(container);
+        const componentsInContainer = $container.find('[data-component-id]');
+        let disposedCount = 0;
+
+        componentsInContainer.each((index, element) => {
+            const componentId = $(element).attr('data-component-id');
+            if (componentId && this.disposeComponent(componentId)) {
+                disposedCount++;
+            }
+        });
+
+        return disposedCount;
+    }
+
+    // Dispose all components
+    disposeAllComponents() {
+        const componentIds = Array.from(this.activeComponents.keys());
+        let disposedCount = 0;
+
+        componentIds.forEach(id => {
+            if (this.disposeComponent(id)) {
+                disposedCount++;
+            }
+        });
+
+        return disposedCount;
+    }
+
+    // Get component by ID
+    getComponent(componentId) {
+        return this.activeComponents.get(componentId);
+    }
+
+    // Get all components of a specific type
+    getComponentsByType(type) {
+        const components = [];
+        this.activeComponents.forEach((data, id) => {
+            if (data.type === type) {
+                components.push({
+                    id: id,
+                    ...data
+                });
+            }
+        });
+        return components;
+    }
+
+    // Get component statistics
+    getStats() {
+        const stats = {
+            total: this.activeComponents.size,
+            byType: {},
+            memoryUsage: 0
+        };
+
+        this.activeComponents.forEach((data, id) => {
+            stats.byType[data.type] = (stats.byType[data.type] || 0) + 1;
+            stats.memoryUsage += this.estimateComponentMemory(data);
+        });
+
+        return stats;
+    }
+
+    // Estimate memory usage of a component
+    estimateComponentMemory(componentData) {
+        // Simple estimation based on DOM nodes and data
+        const element = componentData.element;
+        const nodeCount = element.find('*').length + 1; // +1 for the element itself
+        return nodeCount * 100; // Rough estimate: 100 bytes per DOM node
+    }
+
+    // Trigger component lifecycle events
+    triggerComponentEvent(componentId, eventName, data) {
+        const event = $.Event(`component:${eventName}`, {
+            componentId: componentId,
+            ...data
+        });
+        
+        $(document).trigger(event);
+    }
+
+    // Clean up old components (older than specified time)
+    cleanupOldComponents(maxAge = 300000) { // 5 minutes default
+        const now = Date.now();
+        const oldComponents = [];
+
+        this.activeComponents.forEach((data, id) => {
+            if (now - data.created > maxAge) {
+                oldComponents.push(id);
+            }
+        });
+
+        oldComponents.forEach(id => this.disposeComponent(id));
+        return oldComponents.length;
+    }
+}
+
+// Global component manager instance
+window.ComponentManager = new ComponentManager();
+
+// jQuery plugin for easy component management
+$.fn.renderComponent = function(component, options = {}) {
+    return window.ComponentManager.renderComponent(component, this, options);
+};
+
+$.fn.disposeComponents = function() {
+    return window.ComponentManager.disposeComponentsInContainer(this);
+};
+
+// Auto-cleanup on page unload
+$(window).on('beforeunload', function() {
+    window.ComponentManager.disposeAllComponents();
+});
 
 
 // Website Builder - Build websites from JSON configuration
@@ -844,8 +1131,24 @@ class ButtonComponent extends BaseComponent {
     render() {
         const $btn = createElement('button', 'ui-button', this.config.text || 'Click Me');
         $btn.attr('id', this.id);
-        if (this.config.onClick) $btn.on('click', this.config.onClick);
+        
+        // Store element reference
+        this.element = $btn;
+        
+        // Add click handler with proper cleanup
+        if (this.config.onClick) {
+            this.addEventHandler($btn, 'click', this.config.onClick);
+        }
+        
         return $btn;
+    }
+
+    onMounted() {
+        // Component is now in the DOM
+    }
+
+    onBeforeDispose() {
+        // Component is being disposed
     }
 }
 
@@ -973,7 +1276,7 @@ class FormBuilder {
             revert: 'invalid',
             cursor: 'move',
             start: function(event, ui) {
-                console.log('Drag started:', $(this).data('type'));
+                // Drag started
             }
         });
 
@@ -984,49 +1287,49 @@ class FormBuilder {
             drop: (event, ui) => {
                 event.preventDefault();
                 const componentType = ui.helper.attr('data-type') || ui.helper.data('type');
-                console.log('Dropped component type:', componentType);
                 this.addComponentToCanvas(componentType);
             }
         });
     }
 
     addComponentToCanvas(componentType) {
-        console.log('Adding component to canvas:', componentType);
-        let component;
+        let ComponentClass;
         const config = { id: `comp-${Date.now()}` };
 
         try {
             switch (componentType) {
                 case 'input':
-                    component = new InputComponent(config);
+                    ComponentClass = InputComponent;
                     break;
                 case 'button':
-                    component = new ButtonComponent(config);
+                    ComponentClass = ButtonComponent;
                     break;
                 case 'checkbox':
-                    component = new CheckboxComponent(config);
+                    ComponentClass = CheckboxComponent;
                     break;
                 case 'select':
                     config.options = ['Option 1', 'Option 2', 'Option 3'];
-                    component = new SelectComponent(config);
+                    ComponentClass = SelectComponent;
                     break;
                 default:
-                    console.warn('Unknown component type:', componentType);
                     return;
             }
 
-            const $rendered = component.render();
-            $rendered.addClass('form-component');
-            
             // Clear the placeholder text if it exists
             this.container.find('p').remove();
             
-            this.container.append($rendered);
-            this.components.push(component);
+            // Use ComponentManager to render the component
+            const componentData = window.ComponentManager.renderComponent(ComponentClass, this.container, { config });
             
-            console.log('Component added successfully:', componentType);
+            if (componentData) {
+                // Add form component styling
+                componentData.element.addClass('form-component');
+                
+                // Store component reference
+                this.components.push(componentData);
+            }
         } catch (error) {
-            console.error('Error adding component:', error);
+            // Error adding component
         }
     }
 
@@ -1046,6 +1349,14 @@ class FormBuilder {
     }
 
     clearForm() {
+        // Dispose all components using ComponentManager
+        this.components.forEach(comp => {
+            if (comp.dispose) {
+                comp.dispose();
+            }
+        });
+        
+        // Clear the container
         this.container.empty();
         this.components = [];
         
@@ -1139,8 +1450,8 @@ const LayoutTemplates = {
         topbar: {
             title: 'Dashboard Overview',
             actions: [
-                { text: 'Export', onClick: () => console.log('Export clicked') },
-                { text: 'Settings', onClick: () => console.log('Settings clicked') }
+                { text: 'Export', onClick: () => alert('Export clicked') },
+                { text: 'Settings', onClick: () => alert('Settings clicked') }
             ]
         },
         content: [
