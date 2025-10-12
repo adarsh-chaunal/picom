@@ -4,56 +4,71 @@ class CardComponent extends BaseComponent {
     }
 
     render() {
-        const $card = createElement('div', 'ui-card');
+        const card = document.createElement('div');
+        card.className = 'picom-card';
         
         // Card image
         if (this.config.image) {
-            const $image = createElement('div', 'card-image');
-            const $img = createElement('img');
-            $img.attr('src', this.config.image.src || this.config.image);
-            $img.attr('alt', this.config.image.alt || 'Card image');
-            $image.append($img);
-            $card.append($image);
+            const image = document.createElement('div');
+            image.className = 'picom-card-image';
+            
+            const img = document.createElement('img');
+            img.src = this.config.image.src || this.config.image;
+            img.alt = this.config.image.alt || 'Card image';
+            
+            image.appendChild(img);
+            card.appendChild(image);
         }
         
         // Card content
-        const $content = createElement('div', 'card-content');
+        const content = document.createElement('div');
+        content.className = 'picom-card-content';
         
         // Title
         if (this.config.title) {
-            const $title = createElement('h3', 'card-title', this.config.title);
-            $content.append($title);
+            const title = document.createElement('h3');
+            title.className = 'picom-card-title';
+            title.textContent = this.config.title;
+            content.appendChild(title);
         }
         
         // Description
         if (this.config.description) {
-            const $description = createElement('p', 'card-description', this.config.description);
-            $content.append($description);
+            const description = document.createElement('p');
+            description.className = 'picom-card-description';
+            description.textContent = this.config.description;
+            content.appendChild(description);
         }
         
         // Buttons
         if (this.config.buttons && Array.isArray(this.config.buttons)) {
-            const $buttonGroup = createElement('div', 'card-buttons');
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'picom-card-buttons';
             
             this.config.buttons.forEach(btn => {
-                const $button = createElement('a', `card-btn ${btn.variant || 'primary'}`);
-                $button.attr('href', btn.href || '#');
-                $button.text(btn.text || 'Button');
+                const button = document.createElement('a');
+                button.className = `picom-card-btn ${btn.variant || 'primary'}`;
+                button.href = btn.href || '#';
+                button.textContent = btn.text || 'Button';
                 
                 if (btn.onClick) {
-                    $button.on('click', (e) => {
+                    this.addEventHandler(button, 'click', (e) => {
                         e.preventDefault();
                         btn.onClick();
                     });
                 }
                 
-                $buttonGroup.append($button);
+                buttonGroup.appendChild(button);
             });
             
-            $content.append($buttonGroup);
+            content.appendChild(buttonGroup);
         }
         
-        $card.append($content);
-        return $card;
+        card.appendChild(content);
+        
+        // Store element reference
+        this.element = card;
+        
+        return card;
     }
 }

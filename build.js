@@ -26,6 +26,7 @@ function concatenateFiles(filePaths, outputPath) {
 
 // Build JavaScript bundle
 const jsFiles = [
+    'src/core/cssLoader.js',
     'src/core/base.js',
     'src/core/eventBus.js', 
     'src/core/domUtils.js',

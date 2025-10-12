@@ -1,3 +1,189 @@
+// CSS Loader - Automatically loads component CSS
+class CSSLoader {
+    constructor() {
+        this.loadedStyles = new Set();
+        this.styleElement = null;
+    }
+
+    // Load CSS for a component
+    loadComponentCSS(componentName) {
+        if (this.loadedStyles.has(componentName)) {
+            return; // Already loaded
+        }
+
+        // For bundled version, CSS is already included
+        // This is mainly for development or when using individual components
+        if (typeof window.PICOM_BUNDLED !== 'undefined' && window.PICOM_BUNDLED) {
+            this.loadedStyles.add(componentName);
+            return;
+        }
+
+        // Load individual component CSS (for development)
+        this.injectCSS(componentName);
+        this.loadedStyles.add(componentName);
+    }
+
+    // Inject CSS into the document
+    injectCSS(componentName) {
+        const cssMap = {
+            'input': `
+                .picom-textbox {
+                    margin-bottom: 15px;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .picom-textbox-label {
+                    font-weight: 600;
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #333;
+                    font-size: 14px;
+                }
+                .picom-textbox-input {
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 2px solid #e1e5e9;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    transition: border-color 0.2s ease;
+                    box-sizing: border-box;
+                }
+                .picom-textbox-input:focus {
+                    outline: none;
+                    border-color: #007bff;
+                    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+                }
+                .picom-textbox-input::placeholder {
+                    color: #6c757d;
+                }
+            `,
+            'button': `
+                .picom-button {
+                    background: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 500;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    transition: all 0.2s ease;
+                    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+                }
+                .picom-button:hover {
+                    background: #0056b3;
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+                }
+                .picom-button:active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+                }
+                .picom-button:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+                }
+            `,
+            'checkbox': `
+                .picom-checkbox {
+                    margin-bottom: 15px;
+                    display: flex;
+                    align-items: center;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .picom-checkbox-input {
+                    width: 18px;
+                    height: 18px;
+                    margin-right: 8px;
+                    cursor: pointer;
+                    accent-color: #007bff;
+                }
+                .picom-checkbox-label {
+                    font-weight: 500;
+                    cursor: pointer;
+                    color: #333;
+                    font-size: 14px;
+                    user-select: none;
+                }
+                .picom-checkbox-label:hover {
+                    color: #007bff;
+                }
+            `,
+            'select': `
+                .picom-select {
+                    margin-bottom: 15px;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .picom-select-label {
+                    font-weight: 600;
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #333;
+                    font-size: 14px;
+                }
+                .picom-select-input {
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 2px solid #e1e5e9;
+                    border-radius: 6px;
+                    background-color: white;
+                    cursor: pointer;
+                    font-size: 14px;
+                    transition: border-color 0.2s ease;
+                    box-sizing: border-box;
+                }
+                .picom-select-input:focus {
+                    outline: none;
+                    border-color: #007bff;
+                    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+                }
+                .picom-select-input:hover {
+                    border-color: #007bff;
+                }
+            `
+        };
+
+        const css = cssMap[componentName];
+        if (css) {
+            this.addStyleToDocument(css);
+        }
+    }
+
+    // Add CSS to document
+    addStyleToDocument(css) {
+        if (!this.styleElement) {
+            this.styleElement = document.createElement('style');
+            this.styleElement.setAttribute('data-picom-css', 'true');
+            document.head.appendChild(this.styleElement);
+        }
+        
+        this.styleElement.textContent += css;
+    }
+
+    // Check if CSS is already loaded
+    isLoaded(componentName) {
+        return this.loadedStyles.has(componentName);
+    }
+
+    // Load all component CSS
+    loadAllCSS() {
+        const components = ['input', 'button', 'checkbox', 'select', 'card', 'navbar', 'hero', 'section'];
+        components.forEach(component => this.loadComponentCSS(component));
+    }
+}
+
+// Global CSS loader instance
+window.PicomCSSLoader = new CSSLoader();
+
+// Auto-load CSS when components are used
+document.addEventListener('DOMContentLoaded', function() {
+    // Mark as bundled if using dist files
+    if (document.querySelector('script[src*="dist/picom.js"]')) {
+        window.PICOM_BUNDLED = true;
+    }
+});
+
+
 // Common utilities and base classes
 
 class BaseComponent {
@@ -8,6 +194,16 @@ class BaseComponent {
         this.element = null;
         this.isDisposed = false;
         this.eventHandlers = [];
+        
+        // Auto-load CSS for this component
+        this.loadCSS();
+    }
+
+    // Load CSS for this component type
+    loadCSS() {
+        if (window.PicomCSSLoader) {
+            window.PicomCSSLoader.loadComponentCSS(this.type);
+        }
     }
 
     render() {
@@ -40,10 +236,15 @@ class BaseComponent {
         // Remove all event handlers
         this.eventHandlers.forEach(handler => {
             if (handler.element && handler.event && handler.fn) {
-                handler.element.off(handler.event, handler.fn);
+                handler.element.removeEventListener(handler.event, handler.fn);
             }
         });
         this.eventHandlers = [];
+
+        // Remove element from DOM if it exists
+        if (this.element && this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
 
         // Clear element reference
         this.element = null;
@@ -54,11 +255,10 @@ class BaseComponent {
 
     // Helper method to add event handlers that will be cleaned up
     addEventHandler(element, event, handler) {
-        const $element = $(element);
-        $element.on(event, handler);
+        element.addEventListener(event, handler);
         
         this.eventHandlers.push({
-            element: $element,
+            element: element,
             event: event,
             fn: handler
         });
@@ -72,9 +272,12 @@ class BaseComponent {
     // Helper method to update component configuration
     updateConfig(newConfig) {
         this.config = { ...this.config, ...newConfig };
-        // Trigger re-render if element exists
+        // Trigger custom event if element exists
         if (this.element) {
-            this.element.trigger('component:configUpdated', newConfig);
+            const event = new CustomEvent('component:configUpdated', {
+                detail: newConfig
+            });
+            this.element.dispatchEvent(event);
         }
     }
 }
@@ -93,13 +296,13 @@ function subscribe(event, handler) {
 }
 
 
-// DOM helpers
+// DOM helpers - Pure vanilla JS
 
 function createElement(tag, className, text) {
-    const $el = $(`<${tag}>`);
-    if (className) $el.addClass(className);
-    if (text) $el.text(text);
-    return $el;
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text) element.textContent = text;
+    return element;
 }
 
 
@@ -118,7 +321,6 @@ class ComponentManager {
         }
 
         const componentId = `comp-${++this.componentCounter}`;
-        const $container = $(container);
         
         // Create component instance if it's a class
         let componentInstance;
@@ -132,37 +334,37 @@ class ComponentManager {
         }
 
         // Render the component
-        const $rendered = componentInstance.render();
-        if (!$rendered || $rendered.length === 0) {
+        const rendered = componentInstance.render();
+        if (!rendered) {
             console.warn('ComponentManager: Component render returned empty result');
             return null;
         }
 
         // Add component ID and metadata
-        $rendered.attr('data-component-id', componentId);
-        $rendered.attr('data-component-type', componentInstance.constructor.name);
+        rendered.setAttribute('data-component-id', componentId);
+        rendered.setAttribute('data-component-type', componentInstance.constructor.name);
 
         // Store component reference
         this.activeComponents.set(componentId, {
             instance: componentInstance,
-            element: $rendered,
-            container: $container,
+            element: rendered,
+            container: container,
             type: componentInstance.constructor.name,
             created: Date.now()
         });
 
         // Append to container
-        $container.append($rendered);
+        container.appendChild(rendered);
 
         // Trigger component mounted event
         this.triggerComponentEvent(componentId, 'mounted', {
             component: componentInstance,
-            element: $rendered
+            element: rendered
         });
 
         return {
             id: componentId,
-            element: $rendered,
+            element: rendered,
             instance: componentInstance,
             dispose: () => this.disposeComponent(componentId)
         };
@@ -194,7 +396,9 @@ class ComponentManager {
         }
 
         // Remove from DOM
-        element.remove();
+        if (element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
 
         // Remove from tracking
         this.activeComponents.delete(componentId);
@@ -209,12 +413,11 @@ class ComponentManager {
 
     // Dispose all components in a container
     disposeComponentsInContainer(container) {
-        const $container = $(container);
-        const componentsInContainer = $container.find('[data-component-id]');
+        const componentsInContainer = container.querySelectorAll('[data-component-id]');
         let disposedCount = 0;
 
-        componentsInContainer.each((index, element) => {
-            const componentId = $(element).attr('data-component-id');
+        componentsInContainer.forEach(element => {
+            const componentId = element.getAttribute('data-component-id');
             if (componentId && this.disposeComponent(componentId)) {
                 disposedCount++;
             }
@@ -276,18 +479,20 @@ class ComponentManager {
     estimateComponentMemory(componentData) {
         // Simple estimation based on DOM nodes and data
         const element = componentData.element;
-        const nodeCount = element.find('*').length + 1; // +1 for the element itself
+        const nodeCount = element.querySelectorAll('*').length + 1; // +1 for the element itself
         return nodeCount * 100; // Rough estimate: 100 bytes per DOM node
     }
 
     // Trigger component lifecycle events
     triggerComponentEvent(componentId, eventName, data) {
-        const event = $.Event(`component:${eventName}`, {
-            componentId: componentId,
-            ...data
+        const event = new CustomEvent(`component:${eventName}`, {
+            detail: {
+                componentId: componentId,
+                ...data
+            }
         });
         
-        $(document).trigger(event);
+        document.dispatchEvent(event);
     }
 
     // Clean up old components (older than specified time)
@@ -309,17 +514,8 @@ class ComponentManager {
 // Global component manager instance
 window.ComponentManager = new ComponentManager();
 
-// jQuery plugin for easy component management
-$.fn.renderComponent = function(component, options = {}) {
-    return window.ComponentManager.renderComponent(component, this, options);
-};
-
-$.fn.disposeComponents = function() {
-    return window.ComponentManager.disposeComponentsInContainer(this);
-};
-
 // Auto-cleanup on page unload
-$(window).on('beforeunload', function() {
+window.addEventListener('beforeunload', function() {
     window.ComponentManager.disposeAllComponents();
 });
 
@@ -469,7 +665,8 @@ class LayoutComponent extends BaseComponent {
 
     // Default layout - basic structure
     defaultLayout() {
-        const $layout = createElement('div', 'ui-layout default-layout');
+        const layout = document.createElement('div');
+        layout.className = 'picom-layout default-layout';
         
         // Header
         if (this.config.header) {
@@ -855,68 +1052,85 @@ class NavbarComponent extends BaseComponent {
     }
 
     render() {
-        const $navbar = createElement('nav', 'ui-navbar');
+        const navbar = document.createElement('nav');
+        navbar.className = 'picom-navbar';
         
         // Brand/Logo
         if (this.config.brand) {
-            const $brand = createElement('div', 'navbar-brand');
+            const brand = document.createElement('div');
+            brand.className = 'picom-navbar-brand';
+            
             if (this.config.brand.logo) {
-                const $logo = createElement('img', 'navbar-logo');
-                $logo.attr('src', this.config.brand.logo);
-                $logo.attr('alt', this.config.brand.text || 'Logo');
-                $brand.append($logo);
+                const logo = document.createElement('img');
+                logo.className = 'picom-navbar-logo';
+                logo.src = this.config.brand.logo;
+                logo.alt = this.config.brand.text || 'Logo';
+                brand.appendChild(logo);
             }
+            
             if (this.config.brand.text) {
-                const $brandText = createElement('span', 'navbar-brand-text', this.config.brand.text);
-                $brand.append($brandText);
+                const brandText = document.createElement('span');
+                brandText.className = 'picom-navbar-brand-text';
+                brandText.textContent = this.config.brand.text;
+                brand.appendChild(brandText);
             }
+            
             if (this.config.brand.href) {
-                const $brandLink = createElement('a', 'navbar-brand-link');
-                $brandLink.attr('href', this.config.brand.href);
-                $brandLink.append($brand);
-                $navbar.append($brandLink);
+                const brandLink = document.createElement('a');
+                brandLink.className = 'picom-navbar-brand-link';
+                brandLink.href = this.config.brand.href;
+                brandLink.appendChild(brand);
+                navbar.appendChild(brandLink);
             } else {
-                $navbar.append($brand);
+                navbar.appendChild(brand);
             }
         }
 
         // Navigation Items
         if (this.config.items && Array.isArray(this.config.items)) {
-            const $navItems = createElement('div', 'navbar-items');
+            const navItems = document.createElement('div');
+            navItems.className = 'picom-navbar-items';
             
             this.config.items.forEach(item => {
-                const $navItem = createElement('a', 'navbar-item');
-                $navItem.attr('href', item.href || '#');
-                $navItem.text(item.text || 'Link');
+                const navItem = document.createElement('a');
+                navItem.className = 'picom-navbar-item';
+                navItem.href = item.href || '#';
+                navItem.textContent = item.text || 'Link';
                 
                 if (item.active) {
-                    $navItem.addClass('active');
+                    navItem.classList.add('active');
                 }
                 
                 if (item.onClick) {
-                    $navItem.on('click', (e) => {
+                    this.addEventHandler(navItem, 'click', (e) => {
                         e.preventDefault();
                         item.onClick();
                     });
                 }
                 
-                $navItems.append($navItem);
+                navItems.appendChild(navItem);
             });
             
-            $navbar.append($navItems);
+            navbar.appendChild(navItems);
         }
 
         // Mobile menu toggle
         if (this.config.mobile) {
-            const $mobileToggle = createElement('button', 'navbar-mobile-toggle');
-            $mobileToggle.html('☰');
-            $mobileToggle.on('click', () => {
-                $navbar.toggleClass('mobile-open');
+            const mobileToggle = document.createElement('button');
+            mobileToggle.className = 'picom-navbar-mobile-toggle';
+            mobileToggle.innerHTML = '☰';
+            
+            this.addEventHandler(mobileToggle, 'click', () => {
+                navbar.classList.toggle('mobile-open');
             });
-            $navbar.append($mobileToggle);
+            
+            navbar.appendChild(mobileToggle);
         }
 
-        return $navbar;
+        // Store element reference
+        this.element = navbar;
+        
+        return navbar;
     }
 }
 
@@ -927,52 +1141,64 @@ class HeroComponent extends BaseComponent {
     }
 
     render() {
-        const $hero = createElement('section', 'ui-hero');
+        const hero = document.createElement('section');
+        hero.className = 'picom-hero';
         
         // Background image
         if (this.config.background) {
-            $hero.css('background-image', `url(${this.config.background})`);
+            hero.style.backgroundImage = `url(${this.config.background})`;
         }
         
         // Content container
-        const $container = createElement('div', 'hero-container');
+        const container = document.createElement('div');
+        container.className = 'picom-hero-container';
         
         // Title
         if (this.config.title) {
-            const $title = createElement('h1', 'hero-title', this.config.title);
-            $container.append($title);
+            const title = document.createElement('h1');
+            title.className = 'picom-hero-title';
+            title.textContent = this.config.title;
+            container.appendChild(title);
         }
         
         // Subtitle
         if (this.config.subtitle) {
-            const $subtitle = createElement('p', 'hero-subtitle', this.config.subtitle);
-            $container.append($subtitle);
+            const subtitle = document.createElement('p');
+            subtitle.className = 'picom-hero-subtitle';
+            subtitle.textContent = this.config.subtitle;
+            container.appendChild(subtitle);
         }
         
         // Buttons
         if (this.config.buttons && Array.isArray(this.config.buttons)) {
-            const $buttonGroup = createElement('div', 'hero-buttons');
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'picom-hero-buttons';
             
             this.config.buttons.forEach(btn => {
-                const $button = createElement('a', `hero-btn ${btn.variant || 'primary'}`);
-                $button.attr('href', btn.href || '#');
-                $button.text(btn.text || 'Button');
+                const button = document.createElement('a');
+                button.className = `picom-hero-btn ${btn.variant || 'primary'}`;
+                button.href = btn.href || '#';
+                button.textContent = btn.text || 'Button';
                 
                 if (btn.onClick) {
-                    $button.on('click', (e) => {
+                    this.addEventHandler(button, 'click', (e) => {
                         e.preventDefault();
                         btn.onClick();
                     });
                 }
                 
-                $buttonGroup.append($button);
+                buttonGroup.appendChild(button);
             });
             
-            $container.append($buttonGroup);
+            container.appendChild(buttonGroup);
         }
         
-        $hero.append($container);
-        return $hero;
+        hero.appendChild(container);
+        
+        // Store element reference
+        this.element = hero;
+        
+        return hero;
     }
 }
 
@@ -983,63 +1209,74 @@ class SectionComponent extends BaseComponent {
     }
 
     render() {
-        const $section = createElement('section', 'ui-section');
+        const section = document.createElement('section');
+        section.className = 'picom-section';
         
         // Add custom classes
         if (this.config.className) {
-            $section.addClass(this.config.className);
+            section.classList.add(this.config.className);
         }
         
         // Background styling
         if (this.config.background) {
             if (this.config.background.color) {
-                $section.css('background-color', this.config.background.color);
+                section.style.backgroundColor = this.config.background.color;
             }
             if (this.config.background.image) {
-                $section.css('background-image', `url(${this.config.background.image})`);
-                $section.css('background-size', 'cover');
-                $section.css('background-position', 'center');
+                section.style.backgroundImage = `url(${this.config.background.image})`;
+                section.style.backgroundSize = 'cover';
+                section.style.backgroundPosition = 'center';
             }
         }
         
         // Container
-        const $container = createElement('div', 'section-container');
+        const container = document.createElement('div');
+        container.className = 'picom-section-container';
         
         // Title
         if (this.config.title) {
-            const $title = createElement('h2', 'section-title', this.config.title);
-            $container.append($title);
+            const title = document.createElement('h2');
+            title.className = 'picom-section-title';
+            title.textContent = this.config.title;
+            container.appendChild(title);
         }
         
         // Subtitle
         if (this.config.subtitle) {
-            const $subtitle = createElement('p', 'section-subtitle', this.config.subtitle);
-            $container.append($subtitle);
+            const subtitle = document.createElement('p');
+            subtitle.className = 'picom-section-subtitle';
+            subtitle.textContent = this.config.subtitle;
+            container.appendChild(subtitle);
         }
         
         // Content
         if (this.config.content) {
-            const $content = createElement('div', 'section-content');
+            const content = document.createElement('div');
+            content.className = 'picom-section-content';
             
             if (typeof this.config.content === 'string') {
-                $content.html(this.config.content);
+                content.innerHTML = this.config.content;
             } else if (Array.isArray(this.config.content)) {
                 // Handle array of components
                 this.config.content.forEach(item => {
                     if (item.type && item.config) {
                         const component = this.createComponent(item.type, item.config);
                         if (component) {
-                            $content.append(component.render());
+                            content.appendChild(component.render());
                         }
                     }
                 });
             }
             
-            $container.append($content);
+            container.appendChild(content);
         }
         
-        $section.append($container);
-        return $section;
+        section.appendChild(container);
+        
+        // Store element reference
+        this.element = section;
+        
+        return section;
     }
     
     createComponent(type, config) {
@@ -1068,57 +1305,72 @@ class CardComponent extends BaseComponent {
     }
 
     render() {
-        const $card = createElement('div', 'ui-card');
+        const card = document.createElement('div');
+        card.className = 'picom-card';
         
         // Card image
         if (this.config.image) {
-            const $image = createElement('div', 'card-image');
-            const $img = createElement('img');
-            $img.attr('src', this.config.image.src || this.config.image);
-            $img.attr('alt', this.config.image.alt || 'Card image');
-            $image.append($img);
-            $card.append($image);
+            const image = document.createElement('div');
+            image.className = 'picom-card-image';
+            
+            const img = document.createElement('img');
+            img.src = this.config.image.src || this.config.image;
+            img.alt = this.config.image.alt || 'Card image';
+            
+            image.appendChild(img);
+            card.appendChild(image);
         }
         
         // Card content
-        const $content = createElement('div', 'card-content');
+        const content = document.createElement('div');
+        content.className = 'picom-card-content';
         
         // Title
         if (this.config.title) {
-            const $title = createElement('h3', 'card-title', this.config.title);
-            $content.append($title);
+            const title = document.createElement('h3');
+            title.className = 'picom-card-title';
+            title.textContent = this.config.title;
+            content.appendChild(title);
         }
         
         // Description
         if (this.config.description) {
-            const $description = createElement('p', 'card-description', this.config.description);
-            $content.append($description);
+            const description = document.createElement('p');
+            description.className = 'picom-card-description';
+            description.textContent = this.config.description;
+            content.appendChild(description);
         }
         
         // Buttons
         if (this.config.buttons && Array.isArray(this.config.buttons)) {
-            const $buttonGroup = createElement('div', 'card-buttons');
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'picom-card-buttons';
             
             this.config.buttons.forEach(btn => {
-                const $button = createElement('a', `card-btn ${btn.variant || 'primary'}`);
-                $button.attr('href', btn.href || '#');
-                $button.text(btn.text || 'Button');
+                const button = document.createElement('a');
+                button.className = `picom-card-btn ${btn.variant || 'primary'}`;
+                button.href = btn.href || '#';
+                button.textContent = btn.text || 'Button';
                 
                 if (btn.onClick) {
-                    $button.on('click', (e) => {
+                    this.addEventHandler(button, 'click', (e) => {
                         e.preventDefault();
                         btn.onClick();
                     });
                 }
                 
-                $buttonGroup.append($button);
+                buttonGroup.appendChild(button);
             });
             
-            $content.append($buttonGroup);
+            content.appendChild(buttonGroup);
         }
         
-        $card.append($content);
-        return $card;
+        card.appendChild(content);
+        
+        // Store element reference
+        this.element = card;
+        
+        return card;
     }
 }
 
@@ -1129,18 +1381,20 @@ class ButtonComponent extends BaseComponent {
     }
 
     render() {
-        const $btn = createElement('button', 'ui-button', this.config.text || 'Click Me');
-        $btn.attr('id', this.id);
+        const button = document.createElement('button');
+        button.textContent = this.config.text || 'Click Me';
+        button.id = this.config.id || this.id;
+        button.className = 'picom-button';
         
         // Store element reference
-        this.element = $btn;
+        this.element = button;
         
         // Add click handler with proper cleanup
         if (this.config.onClick) {
-            this.addEventHandler($btn, 'click', this.config.onClick);
+            this.addEventHandler(button, 'click', this.config.onClick);
         }
         
-        return $btn;
+        return button;
     }
 
     onMounted() {
@@ -1159,35 +1413,33 @@ class InputComponent extends BaseComponent {
     }
 
     render() {
-        const $container = createElement('div', 'ui-input');
-        const $label = createElement('label', '', this.config.label || 'Label');
-        const $input = $('<input type="text">')
-            .attr('placeholder', this.config.placeholder || 'Enter text')
-            .attr('id', this.id);
-
-        $container.append($label).append('<br>').append($input);
-        return $container;
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'picom-textbox';
+        
+        // Create label
+        const label = document.createElement('label');
+        label.textContent = this.config.label || 'Label';
+        label.className = 'picom-textbox-label';
+        
+        // Create input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = this.config.placeholder || 'Enter text';
+        input.id = this.config.id || this.id;
+        input.className = 'picom-textbox-input';
+        
+        // Assemble
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(input);
+        
+        // Store element reference
+        this.element = container;
+        
+        return container;
     }
 }
-
-//(function ($) {
-//    $.fn.inputComponent = function (config) {
-//        const $input = $('<input type="text" class="ui-input">')
-//            .attr('placeholder', config.placeholder || 'Ender text');
-
-//        if (config.label) {
-//            const $label = $('<label>').text(config.label);
-
-//            this.append($label).append($input);
-//        }
-//        else {
-//            this.append($input);
-//        }
-
-//        return this;
-//    };
-//})(jQuery)
-
 
 class CheckboxComponent extends BaseComponent {
     constructor(config = {}) {
@@ -1195,18 +1447,32 @@ class CheckboxComponent extends BaseComponent {
     }
 
     render() {
-        const $container = createElement('div', 'ui-checkbox');
-        const $label = createElement('label', '', this.config.label || 'Checkbox');
-        const $input = $('<input type="checkbox">')
-            .attr('id', this.id)
-            .prop('checked', this.config.checked || false);
-
+        const container = document.createElement('div');
+        container.className = 'picom-checkbox';
+        
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = this.config.id || this.id;
+        input.className = 'picom-checkbox-input';
+        input.checked = this.config.checked || false;
+        
+        const label = document.createElement('label');
+        label.textContent = this.config.label || 'Checkbox';
+        label.className = 'picom-checkbox-label';
+        label.setAttribute('for', input.id);
+        
+        // Add change handler
         if (this.config.onChange) {
-            $input.on('change', this.config.onChange);
+            this.addEventHandler(input, 'change', this.config.onChange);
         }
-
-        $container.append($input).append(' ').append($label);
-        return $container;
+        
+        container.appendChild(input);
+        container.appendChild(label);
+        
+        // Store element reference
+        this.element = container;
+        
+        return container;
     }
 }
 
@@ -1216,42 +1482,62 @@ class SelectComponent extends BaseComponent {
     }
 
     render() {
-        const $container = createElement('div', 'ui-select');
-        const $label = createElement('label', '', this.config.label || 'Select');
-        const $select = $('<select>').attr('id', this.id);
-
+        const container = document.createElement('div');
+        container.className = 'picom-select';
+        
+        const label = document.createElement('label');
+        label.textContent = this.config.label || 'Select';
+        label.className = 'picom-select-label';
+        
+        const select = document.createElement('select');
+        select.id = this.config.id || this.id;
+        select.className = 'picom-select-input';
+        
+        // Add options
         if (this.config.options && Array.isArray(this.config.options)) {
             this.config.options.forEach(option => {
-                const $option = $('<option>').text(option).val(option);
-                $select.append($option);
+                const optionElement = document.createElement('option');
+                optionElement.textContent = option;
+                optionElement.value = option;
+                select.appendChild(optionElement);
             });
         }
-
+        
+        // Add change handler
         if (this.config.onChange) {
-            $select.on('change', this.config.onChange);
+            this.addEventHandler(select, 'change', this.config.onChange);
         }
-
-        $container.append($label).append('<br>').append($select);
-        return $container;
+        
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(select);
+        
+        // Store element reference
+        this.element = container;
+        
+        return container;
     }
 }
 
 // Main drag-and-drop builder
 class FormBuilder {
     constructor(containerId) {
-        this.container = $(`#${containerId}`);
+        this.container = document.getElementById(containerId);
         this.components = [];
         this.init();
     }
 
     init() {
         this.createComponentPalette();
-        this.setupDragAndDrop();
+        // Delay drag and drop setup to ensure DOM is ready
+        setTimeout(() => {
+            this.setupDragAndDrop();
+        }, 100);
     }
 
     createComponentPalette() {
-        const palette = $('#component-palette');
-        if (palette.length === 0) return;
+        const palette = document.getElementById('component-palette');
+        if (!palette) return;
 
         const components = [
             { type: 'input', label: 'Text Input', icon: '📝' },
@@ -1261,17 +1547,22 @@ class FormBuilder {
         ];
 
         components.forEach(comp => {
-            const $item = $(`<div class="component-item" data-type="${comp.type}">
+            const item = document.createElement('div');
+            item.className = 'component-item';
+            item.setAttribute('data-type', comp.type);
+            item.innerHTML = `
                 <span class="component-icon">${comp.icon}</span>
                 <span class="component-label">${comp.label}</span>
-            </div>`);
-            palette.append($item);
+            `;
+            palette.appendChild(item);
         });
     }
 
     setupDragAndDrop() {
-        // Make component items draggable
-        $('.component-item').draggable({
+        const componentItems = $('.component-item');
+        
+        // Make component items draggable using jQuery UI
+        componentItems.draggable({
             helper: 'clone',
             revert: 'invalid',
             cursor: 'move',
@@ -1280,10 +1571,13 @@ class FormBuilder {
             }
         });
 
-        // Make form canvas droppable
-        this.container.droppable({
+        // Make form canvas droppable using jQuery UI
+        const $container = $(this.container);
+        
+        $container.droppable({
             accept: '.component-item',
             activeClass: 'drag-over',
+            hoverClass: 'ui-droppable-hover',
             drop: (event, ui) => {
                 event.preventDefault();
                 const componentType = ui.helper.attr('data-type') || ui.helper.data('type');
@@ -1316,14 +1610,17 @@ class FormBuilder {
             }
 
             // Clear the placeholder text if it exists
-            this.container.find('p').remove();
+            const placeholder = this.container.querySelector('p');
+            if (placeholder) {
+                placeholder.remove();
+            }
             
             // Use ComponentManager to render the component
             const componentData = window.ComponentManager.renderComponent(ComponentClass, this.container, { config });
             
             if (componentData) {
                 // Add form component styling
-                componentData.element.addClass('form-component');
+                componentData.element.classList.add('form-component');
                 
                 // Store component reference
                 this.components.push(componentData);
@@ -1336,13 +1633,17 @@ class FormBuilder {
     getFormData() {
         const data = {};
         this.components.forEach(comp => {
-            const $element = $(`#${comp.id}`);
-            if ($element.is('input')) {
-                data[comp.id] = $element.val();
-            } else if ($element.is('select')) {
-                data[comp.id] = $element.val();
-            } else if ($element.is('input[type="checkbox"]')) {
-                data[comp.id] = $element.is(':checked');
+            const element = document.getElementById(comp.id);
+            if (element) {
+                if (element.tagName === 'INPUT') {
+                    if (element.type === 'checkbox') {
+                        data[comp.id] = element.checked;
+                    } else {
+                        data[comp.id] = element.value;
+                    }
+                } else if (element.tagName === 'SELECT') {
+                    data[comp.id] = element.value;
+                }
             }
         });
         return data;
@@ -1357,11 +1658,16 @@ class FormBuilder {
         });
         
         // Clear the container
-        this.container.empty();
+        this.container.innerHTML = '';
         this.components = [];
         
         // Add placeholder text back
-        this.container.append('<p style="text-align: center; color: #888; margin-top: 50px;">Drag components from the left panel to build your form</p>');
+        const placeholder = document.createElement('p');
+        placeholder.style.textAlign = 'center';
+        placeholder.style.color = '#888';
+        placeholder.style.marginTop = '50px';
+        placeholder.textContent = 'Drag components from the left panel to build your form';
+        this.container.appendChild(placeholder);
     }
 }
 

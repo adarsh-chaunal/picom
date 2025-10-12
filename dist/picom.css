@@ -1,5 +1,5 @@
 /* Base Layout Styles */
-.ui-layout {
+.picom-layout {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -357,7 +357,7 @@
 }
 
 
-.ui-navbar {
+.picom-navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -370,7 +370,7 @@
     min-height: 70px;
 }
 
-.navbar-brand {
+.picom-navbar-brand {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -378,29 +378,29 @@
     color: #333;
 }
 
-.navbar-brand-link {
+.picom-navbar-brand-link {
     text-decoration: none;
     color: inherit;
 }
 
-.navbar-brand-text {
+.picom-navbar-brand-text {
     font-size: 1.5rem;
     font-weight: 700;
     color: #007bff;
 }
 
-.navbar-logo {
+.picom-navbar-logo {
     height: 40px;
     width: auto;
 }
 
-.navbar-items {
+.picom-navbar-items {
     display: flex;
     align-items: center;
     gap: 2rem;
 }
 
-.navbar-item {
+.picom-navbar-item {
     text-decoration: none;
     color: #333;
     font-weight: 500;
@@ -424,7 +424,7 @@
     background: #0056b3;
 }
 
-.navbar-mobile-toggle {
+.picom-navbar-mobile-toggle {
     display: none;
     background: none;
     border: none;
@@ -441,16 +441,16 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-navbar {
+    .picom-navbar {
         padding: 1rem;
         flex-wrap: wrap;
     }
     
-    .navbar-mobile-toggle {
+    .picom-navbar-mobile-toggle {
         display: block;
     }
     
-    .navbar-items {
+    .picom-navbar-items {
         display: none;
         width: 100%;
         flex-direction: column;
@@ -460,11 +460,11 @@
         border-top: 1px solid #e9ecef;
     }
     
-    .ui-navbar.mobile-open .navbar-items {
+    .picom-navbar.mobile-open .picom-navbar-items {
         display: flex;
     }
     
-    .navbar-item {
+    .picom-navbar-item {
         width: 100%;
         text-align: center;
         padding: 0.75rem 1rem;
@@ -472,35 +472,35 @@
 }
 
 /* Dark Theme Variant */
-.ui-navbar.dark {
+.picom-navbar.dark {
     background: #2c3e50;
     color: white;
 }
 
-.ui-navbar.dark .navbar-brand-text {
+.picom-navbar.dark .picom-navbar-brand-text {
     color: #3498db;
 }
 
-.ui-navbar.dark .navbar-item {
+.picom-navbar.dark .picom-navbar-item {
     color: #ecf0f1;
 }
 
-.ui-navbar.dark .navbar-item:hover {
+.picom-navbar.dark .picom-navbar-item:hover {
     background: #34495e;
     color: #3498db;
 }
 
-.ui-navbar.dark .navbar-item.active {
+.picom-navbar.dark .picom-navbar-item.active {
     background: #3498db;
     color: white;
 }
 
-.ui-navbar.dark .navbar-mobile-toggle:hover {
+.picom-navbar.dark .picom-navbar-mobile-toggle:hover {
     background: #34495e;
 }
 
 
-.ui-hero {
+.picom-hero {
     min-height: 60vh;
     display: flex;
     align-items: center;
@@ -515,7 +515,7 @@
     overflow: hidden;
 }
 
-.ui-hero::before {
+.picom-hero::before {
     content: '';
     position: absolute;
     top: 0;
@@ -526,14 +526,14 @@
     z-index: 1;
 }
 
-.hero-container {
+.picom-hero-container {
     position: relative;
     z-index: 2;
     max-width: 800px;
     padding: 2rem;
 }
 
-.hero-title {
+.picom-hero-title {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -541,21 +541,21 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.hero-subtitle {
+.picom-hero-subtitle {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     opacity: 0.9;
     line-height: 1.6;
 }
 
-.hero-buttons {
+.picom-hero-buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.hero-btn {
+.picom-hero-btn {
     display: inline-block;
     padding: 1rem 2rem;
     border-radius: 50px;
@@ -606,42 +606,42 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-hero {
+    .picom-hero {
         min-height: 50vh;
     }
     
-    .hero-title {
+    .picom-hero-title {
         font-size: 2.5rem;
     }
     
-    .hero-subtitle {
+    .picom-hero-subtitle {
         font-size: 1.1rem;
     }
     
-    .hero-buttons {
+    .picom-hero-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    .hero-btn {
+    .picom-hero-btn {
         width: 100%;
         max-width: 300px;
     }
 }
 
 
-.ui-section {
+.picom-section {
     padding: 4rem 0;
     position: relative;
 }
 
-.section-container {
+.picom-section-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
 }
 
-.section-title {
+.picom-section-title {
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
@@ -650,7 +650,7 @@
     line-height: 1.2;
 }
 
-.section-subtitle {
+.picom-section-subtitle {
     font-size: 1.1rem;
     text-align: center;
     color: #666;
@@ -661,61 +661,61 @@
     line-height: 1.6;
 }
 
-.section-content {
+.picom-section-content {
     margin-top: 2rem;
 }
 
 /* Section Variants */
-.ui-section.light {
+.picom-section.light {
     background: #f8f9fa;
 }
 
-.ui-section.dark {
+.picom-section.dark {
     background: #2c3e50;
     color: white;
 }
 
-.ui-section.dark .section-title {
+.picom-section.dark .picom-section-title {
     color: white;
 }
 
-.ui-section.dark .section-subtitle {
+.picom-section.dark .picom-section-subtitle {
     color: #bdc3c7;
 }
 
-.ui-section.primary {
+.picom-section.primary {
     background: #007bff;
     color: white;
 }
 
-.ui-section.primary .section-title {
+.picom-section.primary .picom-section-title {
     color: white;
 }
 
-.ui-section.primary .section-subtitle {
+.picom-section.primary .picom-section-subtitle {
     color: rgba(255, 255, 255, 0.9);
 }
 
-.ui-section.secondary {
+.picom-section.secondary {
     background: #6c757d;
     color: white;
 }
 
-.ui-section.secondary .section-title {
+.picom-section.secondary .picom-section-title {
     color: white;
 }
 
-.ui-section.secondary .section-subtitle {
+.picom-section.secondary .picom-section-subtitle {
     color: rgba(255, 255, 255, 0.9);
 }
 
 /* Section with background image */
-.ui-section.with-bg {
+.picom-section.with-bg {
     background-attachment: fixed;
     position: relative;
 }
 
-.ui-section.with-bg::before {
+.picom-section.with-bg::before {
     content: '';
     position: absolute;
     top: 0;
@@ -726,73 +726,74 @@
     z-index: 1;
 }
 
-.ui-section.with-bg .section-container {
+.picom-section.with-bg .picom-section-container {
     position: relative;
     z-index: 2;
 }
 
-.ui-section.with-bg .section-title,
-.ui-section.with-bg .section-subtitle {
+.picom-section.with-bg .picom-section-title,
+.picom-section.with-bg .picom-section-subtitle {
     color: white;
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-section {
+    .picom-section {
         padding: 2rem 0;
     }
     
-    .section-container {
+    .picom-section-container {
         padding: 0 1rem;
     }
     
-    .section-title {
+    .picom-section-title {
         font-size: 2rem;
     }
     
-    .section-subtitle {
+    .picom-section-subtitle {
         font-size: 1rem;
         margin-bottom: 2rem;
     }
 }
 
 
-.ui-card {
+.picom-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: all 0.3s ease;
     border: 1px solid #e9ecef;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.ui-card:hover {
+.picom-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card-image {
+.picom-card-image {
     width: 100%;
     height: 200px;
     overflow: hidden;
 }
 
-.card-image img {
+.picom-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.ui-card:hover .card-image img {
+.picom-card:hover .picom-card-image img {
     transform: scale(1.05);
 }
 
-.card-content {
+.picom-card-content {
     padding: 1.5rem;
 }
 
-.card-title {
+.picom-card-title {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
@@ -800,19 +801,19 @@
     line-height: 1.3;
 }
 
-.card-description {
+.picom-card-description {
     color: #666;
     line-height: 1.6;
     margin-bottom: 1.5rem;
 }
 
-.card-buttons {
+.picom-card-buttons {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
 }
 
-.card-btn {
+.picom-card-btn {
     display: inline-block;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -824,35 +825,35 @@
     cursor: pointer;
 }
 
-.card-btn.primary {
+.picom-card-btn.primary {
     background: #007bff;
     color: white;
     border-color: #007bff;
 }
 
-.card-btn.primary:hover {
+.picom-card-btn.primary:hover {
     background: #0056b3;
     border-color: #0056b3;
 }
 
-.card-btn.secondary {
+.picom-card-btn.secondary {
     background: #6c757d;
     color: white;
     border-color: #6c757d;
 }
 
-.card-btn.secondary:hover {
+.picom-card-btn.secondary:hover {
     background: #545b62;
     border-color: #545b62;
 }
 
-.card-btn.outline {
+.picom-card-btn.outline {
     background: transparent;
     color: #007bff;
     border-color: #007bff;
 }
 
-.card-btn.outline:hover {
+.picom-card-btn.outline:hover {
     background: #007bff;
     color: white;
 }
@@ -872,19 +873,19 @@
     gap: 1.5rem;
 }
 
-.card-list .ui-card {
+.card-list .picom-card {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.card-list .card-image {
+.card-list .picom-card-image {
     width: 200px;
     height: 150px;
     flex-shrink: 0;
 }
 
-.card-list .card-content {
+.card-list .picom-card-content {
     flex: 1;
 }
 
@@ -895,94 +896,150 @@
         gap: 1rem;
     }
     
-    .card-list .ui-card {
+    .card-list .picom-card {
         flex-direction: column;
     }
     
-    .card-list .card-image {
+    .card-list .picom-card-image {
         width: 100%;
         height: 200px;
     }
     
-    .card-buttons {
+    .picom-card-buttons {
         flex-direction: column;
     }
     
-    .card-btn {
+    .picom-card-btn {
         text-align: center;
     }
 }
 
 
-.ui-button {
-    background: #3498db;
+.picom-button {
+    background: #007bff;
     color: white;
     border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
 
-    .ui-button:hover {
-        background: #2980b9;
-    }
+.picom-button:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.picom-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.picom-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
 
 
-.ui-input {
+.picom-textbox {
     margin-bottom: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-    .ui-input label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .ui-input input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-
-.ui-checkbox {
-    margin-bottom: 15px;
-}
-
-.ui-checkbox label {
-    font-weight: bold;
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-.ui-checkbox input[type="checkbox"] {
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-
-.ui-select {
-    margin-bottom: 15px;
-}
-
-.ui-select label {
-    font-weight: bold;
+.picom-textbox-label {
+    font-weight: 600;
     display: block;
     margin-bottom: 5px;
+    color: #333;
+    font-size: 14px;
 }
 
-.ui-select select {
+.picom-textbox-input {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.picom-textbox-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.picom-textbox-input::placeholder {
+    color: #6c757d;
+}
+
+
+.picom-checkbox {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.picom-checkbox-input {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: #007bff;
+}
+
+.picom-checkbox-label {
+    font-weight: 500;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    user-select: none;
+}
+
+.picom-checkbox-label:hover {
+    color: #007bff;
+}
+
+
+.picom-select {
+    margin-bottom: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.picom-select-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 14px;
+}
+
+.picom-select-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
     background-color: white;
     cursor: pointer;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
-.ui-select select:focus {
+.picom-select-input:focus {
     outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.picom-select-input:hover {
     border-color: #007bff;
 }
 

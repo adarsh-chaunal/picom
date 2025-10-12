@@ -4,18 +4,20 @@ class ButtonComponent extends BaseComponent {
     }
 
     render() {
-        const $btn = createElement('button', 'ui-button', this.config.text || 'Click Me');
-        $btn.attr('id', this.id);
+        const button = document.createElement('button');
+        button.textContent = this.config.text || 'Click Me';
+        button.id = this.config.id || this.id;
+        button.className = 'picom-button';
         
         // Store element reference
-        this.element = $btn;
+        this.element = button;
         
         // Add click handler with proper cleanup
         if (this.config.onClick) {
-            this.addEventHandler($btn, 'click', this.config.onClick);
+            this.addEventHandler(button, 'click', this.config.onClick);
         }
         
-        return $btn;
+        return button;
     }
 
     onMounted() {

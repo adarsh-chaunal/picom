@@ -11,105 +11,12 @@
     <!-- jQuery UI for drag and drop -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
     
-    <!-- Component Styles -->
-    <link rel="stylesheet" href="src/components/layout/layout.css">
-    <link rel="stylesheet" href="src/components/navbar/navbar.css">
-    <link rel="stylesheet" href="src/components/hero/hero.css">
-    <link rel="stylesheet" href="src/components/section/section.css">
-    <link rel="stylesheet" href="src/components/card/card.css">
-    <link rel="stylesheet" href="src/components/button/button.css">
-    <link rel="stylesheet" href="src/components/input/input.css">
-    <link rel="stylesheet" href="src/components/checkbox/checkbox.css">
-    <link rel="stylesheet" href="src/components/select/select.css">
-    <link rel="stylesheet" href="src/builder/builder.css">
+    <!-- Picom UI Library Styles (Bundled) -->
+    <link rel="stylesheet" href="dist/picom.css">
     
     <!-- Global Styles -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #fff;
-        }
-        
-        .page {
-            min-height: 100vh;
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0056b3;
-        }
-        
-        /* Loading animation */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-size: 1.2rem;
-            color: #666;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 1rem;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Footer */
-        .footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .footer p {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
@@ -137,28 +44,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-    <!-- Core utilities -->
-    <script src="src/core/base.js"></script>
-    <script src="src/core/eventBus.js"></script>
-    <script src="src/core/domUtils.js"></script>
-    <script src="src/core/websiteBuilder.js"></script>
-
-    <!-- Components -->
-    <script src="src/components/layout/layout.js"></script>
-    <script src="src/components/navbar/navbar.js"></script>
-    <script src="src/components/hero/hero.js"></script>
-    <script src="src/components/section/section.js"></script>
-    <script src="src/components/card/card.js"></script>
-    <script src="src/components/button/button.js"></script>
-    <script src="src/components/input/input.js"></script>
-    <script src="src/components/checkbox/checkbox.js"></script>
-    <script src="src/components/select/select.js"></script>
-
-    <!-- Builder -->
-    <script src="src/builder/builder.js"></script>
-
-    <!-- Templates -->
-    <script src="src/templates/layouts.js"></script>
+    <!-- Picom UI Library (Bundled) -->
+    <script src="dist/picom.js"></script>
 
     <!-- Website initialization -->
     <script>

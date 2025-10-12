@@ -1,4 +1,4 @@
-.ui-hero {
+.picom-hero {
     min-height: 60vh;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
     overflow: hidden;
 }
 
-.ui-hero::before {
+.picom-hero::before {
     content: '';
     position: absolute;
     top: 0;
@@ -24,14 +24,14 @@
     z-index: 1;
 }
 
-.hero-container {
+.picom-hero-container {
     position: relative;
     z-index: 2;
     max-width: 800px;
     padding: 2rem;
 }
 
-.hero-title {
+.picom-hero-title {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -39,21 +39,21 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.hero-subtitle {
+.picom-hero-subtitle {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     opacity: 0.9;
     line-height: 1.6;
 }
 
-.hero-buttons {
+.picom-hero-buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.hero-btn {
+.picom-hero-btn {
     display: inline-block;
     padding: 1rem 2rem;
     border-radius: 50px;
@@ -104,24 +104,24 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-hero {
+    .picom-hero {
         min-height: 50vh;
     }
     
-    .hero-title {
+    .picom-hero-title {
         font-size: 2.5rem;
     }
     
-    .hero-subtitle {
+    .picom-hero-subtitle {
         font-size: 1.1rem;
     }
     
-    .hero-buttons {
+    .picom-hero-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    .hero-btn {
+    .picom-hero-btn {
         width: 100%;
         max-width: 300px;
     }

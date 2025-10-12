@@ -1,4 +1,4 @@
-.ui-navbar {
+.picom-navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -11,7 +11,7 @@
     min-height: 70px;
 }
 
-.navbar-brand {
+.picom-navbar-brand {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -19,29 +19,29 @@
     color: #333;
 }
 
-.navbar-brand-link {
+.picom-navbar-brand-link {
     text-decoration: none;
     color: inherit;
 }
 
-.navbar-brand-text {
+.picom-navbar-brand-text {
     font-size: 1.5rem;
     font-weight: 700;
     color: #007bff;
 }
 
-.navbar-logo {
+.picom-navbar-logo {
     height: 40px;
     width: auto;
 }
 
-.navbar-items {
+.picom-navbar-items {
     display: flex;
     align-items: center;
     gap: 2rem;
 }
 
-.navbar-item {
+.picom-navbar-item {
     text-decoration: none;
     color: #333;
     font-weight: 500;
@@ -65,7 +65,7 @@
     background: #0056b3;
 }
 
-.navbar-mobile-toggle {
+.picom-navbar-mobile-toggle {
     display: none;
     background: none;
     border: none;
@@ -82,16 +82,16 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-navbar {
+    .picom-navbar {
         padding: 1rem;
         flex-wrap: wrap;
     }
     
-    .navbar-mobile-toggle {
+    .picom-navbar-mobile-toggle {
         display: block;
     }
     
-    .navbar-items {
+    .picom-navbar-items {
         display: none;
         width: 100%;
         flex-direction: column;
@@ -101,11 +101,11 @@
         border-top: 1px solid #e9ecef;
     }
     
-    .ui-navbar.mobile-open .navbar-items {
+    .picom-navbar.mobile-open .picom-navbar-items {
         display: flex;
     }
     
-    .navbar-item {
+    .picom-navbar-item {
         width: 100%;
         text-align: center;
         padding: 0.75rem 1rem;
@@ -113,29 +113,29 @@
 }
 
 /* Dark Theme Variant */
-.ui-navbar.dark {
+.picom-navbar.dark {
     background: #2c3e50;
     color: white;
 }
 
-.ui-navbar.dark .navbar-brand-text {
+.picom-navbar.dark .picom-navbar-brand-text {
     color: #3498db;
 }
 
-.ui-navbar.dark .navbar-item {
+.picom-navbar.dark .picom-navbar-item {
     color: #ecf0f1;
 }
 
-.ui-navbar.dark .navbar-item:hover {
+.picom-navbar.dark .picom-navbar-item:hover {
     background: #34495e;
     color: #3498db;
 }
 
-.ui-navbar.dark .navbar-item.active {
+.picom-navbar.dark .picom-navbar-item.active {
     background: #3498db;
     color: white;
 }
 
-.ui-navbar.dark .navbar-mobile-toggle:hover {
+.picom-navbar.dark .picom-navbar-mobile-toggle:hover {
     background: #34495e;
 }

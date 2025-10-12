@@ -4,51 +4,63 @@ class HeroComponent extends BaseComponent {
     }
 
     render() {
-        const $hero = createElement('section', 'ui-hero');
+        const hero = document.createElement('section');
+        hero.className = 'picom-hero';
         
         // Background image
         if (this.config.background) {
-            $hero.css('background-image', `url(${this.config.background})`);
+            hero.style.backgroundImage = `url(${this.config.background})`;
         }
         
         // Content container
-        const $container = createElement('div', 'hero-container');
+        const container = document.createElement('div');
+        container.className = 'picom-hero-container';
         
         // Title
         if (this.config.title) {
-            const $title = createElement('h1', 'hero-title', this.config.title);
-            $container.append($title);
+            const title = document.createElement('h1');
+            title.className = 'picom-hero-title';
+            title.textContent = this.config.title;
+            container.appendChild(title);
         }
         
         // Subtitle
         if (this.config.subtitle) {
-            const $subtitle = createElement('p', 'hero-subtitle', this.config.subtitle);
-            $container.append($subtitle);
+            const subtitle = document.createElement('p');
+            subtitle.className = 'picom-hero-subtitle';
+            subtitle.textContent = this.config.subtitle;
+            container.appendChild(subtitle);
         }
         
         // Buttons
         if (this.config.buttons && Array.isArray(this.config.buttons)) {
-            const $buttonGroup = createElement('div', 'hero-buttons');
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'picom-hero-buttons';
             
             this.config.buttons.forEach(btn => {
-                const $button = createElement('a', `hero-btn ${btn.variant || 'primary'}`);
-                $button.attr('href', btn.href || '#');
-                $button.text(btn.text || 'Button');
+                const button = document.createElement('a');
+                button.className = `picom-hero-btn ${btn.variant || 'primary'}`;
+                button.href = btn.href || '#';
+                button.textContent = btn.text || 'Button';
                 
                 if (btn.onClick) {
-                    $button.on('click', (e) => {
+                    this.addEventHandler(button, 'click', (e) => {
                         e.preventDefault();
                         btn.onClick();
                     });
                 }
                 
-                $buttonGroup.append($button);
+                buttonGroup.appendChild(button);
             });
             
-            $container.append($buttonGroup);
+            container.appendChild(buttonGroup);
         }
         
-        $hero.append($container);
-        return $hero;
+        hero.appendChild(container);
+        
+        // Store element reference
+        this.element = hero;
+        
+        return hero;
     }
 }

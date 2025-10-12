@@ -4,31 +4,30 @@ class InputComponent extends BaseComponent {
     }
 
     render() {
-        const $container = createElement('div', 'ui-input');
-        const $label = createElement('label', '', this.config.label || 'Label');
-        const $input = $('<input type="text">')
-            .attr('placeholder', this.config.placeholder || 'Enter text')
-            .attr('id', this.id);
-
-        $container.append($label).append('<br>').append($input);
-        return $container;
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'picom-textbox';
+        
+        // Create label
+        const label = document.createElement('label');
+        label.textContent = this.config.label || 'Label';
+        label.className = 'picom-textbox-label';
+        
+        // Create input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = this.config.placeholder || 'Enter text';
+        input.id = this.config.id || this.id;
+        input.className = 'picom-textbox-input';
+        
+        // Assemble
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(input);
+        
+        // Store element reference
+        this.element = container;
+        
+        return container;
     }
 }
-
-//(function ($) {
-//    $.fn.inputComponent = function (config) {
-//        const $input = $('<input type="text" class="ui-input">')
-//            .attr('placeholder', config.placeholder || 'Ender text');
-
-//        if (config.label) {
-//            const $label = $('<label>').text(config.label);
-
-//            this.append($label).append($input);
-//        }
-//        else {
-//            this.append($input);
-//        }
-
-//        return this;
-//    };
-//})(jQuery)

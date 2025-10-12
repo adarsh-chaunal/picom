@@ -8,6 +8,16 @@ class BaseComponent {
         this.element = null;
         this.isDisposed = false;
         this.eventHandlers = [];
+        
+        // Auto-load CSS for this component
+        this.loadCSS();
+    }
+
+    // Load CSS for this component type
+    loadCSS() {
+        if (window.PicomCSSLoader) {
+            window.PicomCSSLoader.loadComponentCSS(this.type);
+        }
     }
 
     render() {
@@ -40,10 +50,15 @@ class BaseComponent {
         // Remove all event handlers
         this.eventHandlers.forEach(handler => {
             if (handler.element && handler.event && handler.fn) {
-                handler.element.off(handler.event, handler.fn);
+                handler.element.removeEventListener(handler.event, handler.fn);
             }
         });
         this.eventHandlers = [];
+
+        // Remove element from DOM if it exists
+        if (this.element && this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
 
         // Clear element reference
         this.element = null;
@@ -54,11 +69,10 @@ class BaseComponent {
 
     // Helper method to add event handlers that will be cleaned up
     addEventHandler(element, event, handler) {
-        const $element = $(element);
-        $element.on(event, handler);
+        element.addEventListener(event, handler);
         
         this.eventHandlers.push({
-            element: $element,
+            element: element,
             event: event,
             fn: handler
         });
@@ -72,9 +86,12 @@ class BaseComponent {
     // Helper method to update component configuration
     updateConfig(newConfig) {
         this.config = { ...this.config, ...newConfig };
-        // Trigger re-render if element exists
+        // Trigger custom event if element exists
         if (this.element) {
-            this.element.trigger('component:configUpdated', newConfig);
+            const event = new CustomEvent('component:configUpdated', {
+                detail: newConfig
+            });
+            this.element.dispatchEvent(event);
         }
     }
 }

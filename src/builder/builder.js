@@ -1,19 +1,22 @@
 // Main drag-and-drop builder
 class FormBuilder {
     constructor(containerId) {
-        this.container = $(`#${containerId}`);
+        this.container = document.getElementById(containerId);
         this.components = [];
         this.init();
     }
 
     init() {
         this.createComponentPalette();
-        this.setupDragAndDrop();
+        // Delay drag and drop setup to ensure DOM is ready
+        setTimeout(() => {
+            this.setupDragAndDrop();
+        }, 100);
     }
 
     createComponentPalette() {
-        const palette = $('#component-palette');
-        if (palette.length === 0) return;
+        const palette = document.getElementById('component-palette');
+        if (!palette) return;
 
         const components = [
             { type: 'input', label: 'Text Input', icon: '📝' },
@@ -23,17 +26,22 @@ class FormBuilder {
         ];
 
         components.forEach(comp => {
-            const $item = $(`<div class="component-item" data-type="${comp.type}">
+            const item = document.createElement('div');
+            item.className = 'component-item';
+            item.setAttribute('data-type', comp.type);
+            item.innerHTML = `
                 <span class="component-icon">${comp.icon}</span>
                 <span class="component-label">${comp.label}</span>
-            </div>`);
-            palette.append($item);
+            `;
+            palette.appendChild(item);
         });
     }
 
     setupDragAndDrop() {
-        // Make component items draggable
-        $('.component-item').draggable({
+        const componentItems = $('.component-item');
+        
+        // Make component items draggable using jQuery UI
+        componentItems.draggable({
             helper: 'clone',
             revert: 'invalid',
             cursor: 'move',
@@ -42,10 +50,13 @@ class FormBuilder {
             }
         });
 
-        // Make form canvas droppable
-        this.container.droppable({
+        // Make form canvas droppable using jQuery UI
+        const $container = $(this.container);
+        
+        $container.droppable({
             accept: '.component-item',
             activeClass: 'drag-over',
+            hoverClass: 'ui-droppable-hover',
             drop: (event, ui) => {
                 event.preventDefault();
                 const componentType = ui.helper.attr('data-type') || ui.helper.data('type');
@@ -78,14 +89,17 @@ class FormBuilder {
             }
 
             // Clear the placeholder text if it exists
-            this.container.find('p').remove();
+            const placeholder = this.container.querySelector('p');
+            if (placeholder) {
+                placeholder.remove();
+            }
             
             // Use ComponentManager to render the component
             const componentData = window.ComponentManager.renderComponent(ComponentClass, this.container, { config });
             
             if (componentData) {
                 // Add form component styling
-                componentData.element.addClass('form-component');
+                componentData.element.classList.add('form-component');
                 
                 // Store component reference
                 this.components.push(componentData);
@@ -98,13 +112,17 @@ class FormBuilder {
     getFormData() {
         const data = {};
         this.components.forEach(comp => {
-            const $element = $(`#${comp.id}`);
-            if ($element.is('input')) {
-                data[comp.id] = $element.val();
-            } else if ($element.is('select')) {
-                data[comp.id] = $element.val();
-            } else if ($element.is('input[type="checkbox"]')) {
-                data[comp.id] = $element.is(':checked');
+            const element = document.getElementById(comp.id);
+            if (element) {
+                if (element.tagName === 'INPUT') {
+                    if (element.type === 'checkbox') {
+                        data[comp.id] = element.checked;
+                    } else {
+                        data[comp.id] = element.value;
+                    }
+                } else if (element.tagName === 'SELECT') {
+                    data[comp.id] = element.value;
+                }
             }
         });
         return data;
@@ -119,10 +137,15 @@ class FormBuilder {
         });
         
         // Clear the container
-        this.container.empty();
+        this.container.innerHTML = '';
         this.components = [];
         
         // Add placeholder text back
-        this.container.append('<p style="text-align: center; color: #888; margin-top: 50px;">Drag components from the left panel to build your form</p>');
+        const placeholder = document.createElement('p');
+        placeholder.style.textAlign = 'center';
+        placeholder.style.color = '#888';
+        placeholder.style.marginTop = '50px';
+        placeholder.textContent = 'Drag components from the left panel to build your form';
+        this.container.appendChild(placeholder);
     }
 }

@@ -27,7 +27,8 @@ class LayoutComponent extends BaseComponent {
 
     // Default layout - basic structure
     defaultLayout() {
-        const $layout = createElement('div', 'ui-layout default-layout');
+        const layout = document.createElement('div');
+        layout.className = 'picom-layout default-layout';
         
         // Header
         if (this.config.header) {

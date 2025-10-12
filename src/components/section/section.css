@@ -1,15 +1,15 @@
-.ui-section {
+.picom-section {
     padding: 4rem 0;
     position: relative;
 }
 
-.section-container {
+.picom-section-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
 }
 
-.section-title {
+.picom-section-title {
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
@@ -18,7 +18,7 @@
     line-height: 1.2;
 }
 
-.section-subtitle {
+.picom-section-subtitle {
     font-size: 1.1rem;
     text-align: center;
     color: #666;
@@ -29,61 +29,61 @@
     line-height: 1.6;
 }
 
-.section-content {
+.picom-section-content {
     margin-top: 2rem;
 }
 
 /* Section Variants */
-.ui-section.light {
+.picom-section.light {
     background: #f8f9fa;
 }
 
-.ui-section.dark {
+.picom-section.dark {
     background: #2c3e50;
     color: white;
 }
 
-.ui-section.dark .section-title {
+.picom-section.dark .picom-section-title {
     color: white;
 }
 
-.ui-section.dark .section-subtitle {
+.picom-section.dark .picom-section-subtitle {
     color: #bdc3c7;
 }
 
-.ui-section.primary {
+.picom-section.primary {
     background: #007bff;
     color: white;
 }
 
-.ui-section.primary .section-title {
+.picom-section.primary .picom-section-title {
     color: white;
 }
 
-.ui-section.primary .section-subtitle {
+.picom-section.primary .picom-section-subtitle {
     color: rgba(255, 255, 255, 0.9);
 }
 
-.ui-section.secondary {
+.picom-section.secondary {
     background: #6c757d;
     color: white;
 }
 
-.ui-section.secondary .section-title {
+.picom-section.secondary .picom-section-title {
     color: white;
 }
 
-.ui-section.secondary .section-subtitle {
+.picom-section.secondary .picom-section-subtitle {
     color: rgba(255, 255, 255, 0.9);
 }
 
 /* Section with background image */
-.ui-section.with-bg {
+.picom-section.with-bg {
     background-attachment: fixed;
     position: relative;
 }
 
-.ui-section.with-bg::before {
+.picom-section.with-bg::before {
     content: '';
     position: absolute;
     top: 0;
@@ -94,31 +94,31 @@
     z-index: 1;
 }
 
-.ui-section.with-bg .section-container {
+.picom-section.with-bg .picom-section-container {
     position: relative;
     z-index: 2;
 }
 
-.ui-section.with-bg .section-title,
-.ui-section.with-bg .section-subtitle {
+.picom-section.with-bg .picom-section-title,
+.picom-section.with-bg .picom-section-subtitle {
     color: white;
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .ui-section {
+    .picom-section {
         padding: 2rem 0;
     }
     
-    .section-container {
+    .picom-section-container {
         padding: 0 1rem;
     }
     
-    .section-title {
+    .picom-section-title {
         font-size: 2rem;
     }
     
-    .section-subtitle {
+    .picom-section-subtitle {
         font-size: 1rem;
         margin-bottom: 2rem;
     }

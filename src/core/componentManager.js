@@ -13,7 +13,6 @@ class ComponentManager {
         }
 
         const componentId = `comp-${++this.componentCounter}`;
-        const $container = $(container);
         
         // Create component instance if it's a class
         let componentInstance;
@@ -27,37 +26,37 @@ class ComponentManager {
         }
 
         // Render the component
-        const $rendered = componentInstance.render();
-        if (!$rendered || $rendered.length === 0) {
+        const rendered = componentInstance.render();
+        if (!rendered) {
             console.warn('ComponentManager: Component render returned empty result');
             return null;
         }
 
         // Add component ID and metadata
-        $rendered.attr('data-component-id', componentId);
-        $rendered.attr('data-component-type', componentInstance.constructor.name);
+        rendered.setAttribute('data-component-id', componentId);
+        rendered.setAttribute('data-component-type', componentInstance.constructor.name);
 
         // Store component reference
         this.activeComponents.set(componentId, {
             instance: componentInstance,
-            element: $rendered,
-            container: $container,
+            element: rendered,
+            container: container,
             type: componentInstance.constructor.name,
             created: Date.now()
         });
 
         // Append to container
-        $container.append($rendered);
+        container.appendChild(rendered);
 
         // Trigger component mounted event
         this.triggerComponentEvent(componentId, 'mounted', {
             component: componentInstance,
-            element: $rendered
+            element: rendered
         });
 
         return {
             id: componentId,
-            element: $rendered,
+            element: rendered,
             instance: componentInstance,
             dispose: () => this.disposeComponent(componentId)
         };
@@ -89,7 +88,9 @@ class ComponentManager {
         }
 
         // Remove from DOM
-        element.remove();
+        if (element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
 
         // Remove from tracking
         this.activeComponents.delete(componentId);
@@ -104,12 +105,11 @@ class ComponentManager {
 
     // Dispose all components in a container
     disposeComponentsInContainer(container) {
-        const $container = $(container);
-        const componentsInContainer = $container.find('[data-component-id]');
+        const componentsInContainer = container.querySelectorAll('[data-component-id]');
         let disposedCount = 0;
 
-        componentsInContainer.each((index, element) => {
-            const componentId = $(element).attr('data-component-id');
+        componentsInContainer.forEach(element => {
+            const componentId = element.getAttribute('data-component-id');
             if (componentId && this.disposeComponent(componentId)) {
                 disposedCount++;
             }
@@ -171,18 +171,20 @@ class ComponentManager {
     estimateComponentMemory(componentData) {
         // Simple estimation based on DOM nodes and data
         const element = componentData.element;
-        const nodeCount = element.find('*').length + 1; // +1 for the element itself
+        const nodeCount = element.querySelectorAll('*').length + 1; // +1 for the element itself
         return nodeCount * 100; // Rough estimate: 100 bytes per DOM node
     }
 
     // Trigger component lifecycle events
     triggerComponentEvent(componentId, eventName, data) {
-        const event = $.Event(`component:${eventName}`, {
-            componentId: componentId,
-            ...data
+        const event = new CustomEvent(`component:${eventName}`, {
+            detail: {
+                componentId: componentId,
+                ...data
+            }
         });
         
-        $(document).trigger(event);
+        document.dispatchEvent(event);
     }
 
     // Clean up old components (older than specified time)
@@ -204,16 +206,7 @@ class ComponentManager {
 // Global component manager instance
 window.ComponentManager = new ComponentManager();
 
-// jQuery plugin for easy component management
-$.fn.renderComponent = function(component, options = {}) {
-    return window.ComponentManager.renderComponent(component, this, options);
-};
-
-$.fn.disposeComponents = function() {
-    return window.ComponentManager.disposeComponentsInContainer(this);
-};
-
 // Auto-cleanup on page unload
-$(window).on('beforeunload', function() {
+window.addEventListener('beforeunload', function() {
     window.ComponentManager.disposeAllComponents();
 });

@@ -1,8 +1,8 @@
-// DOM helpers
+// DOM helpers - Pure vanilla JS
 
 function createElement(tag, className, text) {
-    const $el = $(`<${tag}>`);
-    if (className) $el.addClass(className);
-    if (text) $el.text(text);
-    return $el;
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text) element.textContent = text;
+    return element;
 }

@@ -1,5 +1,5 @@
 /* Base Layout Styles */
-.ui-layout {
+.picom-layout {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
