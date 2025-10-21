@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picom UI Library - TypeScript Example</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="../dist/picom.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .example-section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .example-section h2 {
+            color: #34495e;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .form-container {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .stats {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .stats h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+        
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Picom UI Library</h1>
+            <p>TypeScript Examples & Component Showcase</p>
+        </div>
+
+        <!-- Basic Form Example -->
+        <div class="example-section">
+            <h2>📝 Basic Form Components</h2>
+            <div id="form-container" class="form-container">
+                <!-- Components will be rendered here -->
+            </div>
+            <div class="code-block">
+// TypeScript usage with full type safety
+const inputConfig: InputConfig = {
+    id: 'username-input',
+    label: 'Username',
+    placeholder: 'Enter your username',
+    type: 'text',
+    required: true,
+    onChange: (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        console.log('Input changed:', target.value);
+    }
+};
+
+const inputComponent = new InputComponent(inputConfig);
+            </div>
+        </div>
+
+        <!-- Managed Components Example -->
+        <div class="example-section">
+            <h2>🔧 Component Lifecycle Management</h2>
+            <div id="managed-form" class="form-container">
+                <!-- Components will be rendered here -->
+            </div>
+            <div class="code-block">
+// Using ComponentManager for automatic lifecycle management
+const inputData = ComponentManager.renderComponent(InputComponent, container, {
+    config: {
+        id: 'email-input',
+        label: 'Email',
+        type: 'email',
+        required: true
+    }
+});
+
+// Components are automatically tracked and can be disposed
+setTimeout(() => {
+    if (inputData) {
+        inputData.dispose();
+    }
+}, 5000);
+            </div>
+        </div>
+
+        <!-- Advanced Form Example -->
+        <div class="example-section">
+            <h2>⚡ Advanced Form Configuration</h2>
+            <div id="advanced-form" class="form-container">
+                <!-- Components will be rendered here -->
+            </div>
+            <div class="code-block">
+// Multiple inputs with different configurations
+const inputs: InputConfig[] = [
+    {
+        id: 'name',
+        label: 'Full Name',
+        type: 'text',
+        required: true,
+        minLength: 2,
+        maxLength: 50
+    },
+    {
+        id: 'age',
+        label: 'Age',
+        type: 'number'
+    }
+];
+            </div>
+        </div>
+
+        <!-- Validated Form Example -->
+        <div class="example-section">
+            <h2>✅ Form Validation & Data Collection</h2>
+            <div id="validated-form" class="form-container">
+                <!-- Components will be rendered here -->
+            </div>
+            <div class="code-block">
+// Form validation and data collection
+const isValid = Object.values(components).every(comp => comp.isValid());
+
+if (isValid) {
+    const formData: { [key: string]: string } = {};
+    Object.entries(components).forEach(([key, comp]) => {
+        formData[key] = comp.getValue();
+    });
+    console.log('Form data:', formData);
+}
+            </div>
+        </div>
+
+        <!-- Component Statistics -->
+        <div class="example-section">
+            <h2>📊 Component Statistics</h2>
+            <div id="stats-container" class="stats">
+                <h3>Active Components</h3>
+                <div id="stats-content">
+                    <!-- Stats will be displayed here -->
+                </div>
+            </div>
+            <div class="code-block">
+// Get component statistics
+const stats = ComponentManager.getStats();
+console.log('Total components:', stats.total);
+console.log('By type:', stats.byType);
+console.log('Memory usage:', stats.memoryUsage);
+            </div>
+        </div>
+    </div>
+
+    <!-- Picom UI Library -->
+    <script src="../dist/picom.js"></script>
+
+    <script>
+        // TypeScript-like usage in JavaScript (for demonstration)
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('TypeScript Example loaded');
+            
+            // Update stats every 2 seconds
+            setInterval(updateStats, 2000);
+            updateStats();
+        });
+
+        function updateStats() {
+            const statsContainer = document.getElementById('stats-content');
+            if (!statsContainer || !window.ComponentManager) return;
+
+            const stats = window.ComponentManager.getStats();
+            
+            statsContainer.innerHTML = `
+                <div class="stats-item">
+                    <span>Total Components:</span>
+                    <strong>${stats.total}</strong>
+                </div>
+                <div class="stats-item">
+                    <span>Memory Usage:</span>
+                    <strong>${stats.memoryUsage} bytes</strong>
+                </div>
+                <div class="stats-item">
+                    <span>By Type:</span>
+                    <strong>${Object.entries(stats.byType).map(([type, count]) => `${type}: ${count}`).join(', ')}</strong>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

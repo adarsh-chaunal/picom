@@ -1,18 +1,24 @@
 {
   "name": "picom-ui-library",
-  "version": "1.0.0",
-  "description": "A lightweight JavaScript and CSS component library with drag-and-drop form builder",
+  "version": "2.0.0",
+  "description": "A lightweight TypeScript/JavaScript and CSS component library with drag-and-drop form builder",
   "main": "dist/picom.min.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/",
     "src/",
-    "README.md"
+    "README.md",
+    "tsconfig.json"
   ],
   "scripts": {
-    "build": "npm run build:js && npm run build:css",
-    "build:js": "mkdir -p dist && cat src/core/*.js src/components/*/*.js src/builder/*.js > dist/picom.js && uglifyjs dist/picom.js -o dist/picom.min.js",
+    "build": "node build-ts.js",
+    "build:ts": "tsc",
+    "build:js": "node build-ts.js",
     "build:css": "mkdir -p dist && cat src/components/*/*.css src/builder/*.css > dist/picom.css",
+    "build:legacy": "npm run build:js && npm run build:css",
     "dev": "python -m http.server 8000",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
@@ -20,12 +26,15 @@
     "components",
     "form-builder",
     "drag-drop",
+    "typescript",
     "javascript",
     "css"
   ],
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.19.21",
+    "typescript": "^5.9.3",
     "uglify-js": "^3.17.4"
   },
   "peerDependencies": {
